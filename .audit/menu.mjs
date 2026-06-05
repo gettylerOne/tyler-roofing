@@ -1,0 +1,12 @@
+import puppeteer from "puppeteer-core";
+const CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ["--no-sandbox"] });
+const page = await browser.newPage();
+await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+await page.goto("http://localhost:3000/index.html", { waitUntil: "networkidle0" });
+await new Promise((r) => setTimeout(r, 300));
+await page.click(".mobile-toggle");
+await new Promise((r) => setTimeout(r, 500));
+await page.screenshot({ path: "C:\\AI Projects\\Tyler Roofing\\.audit\\menu-open-390.png" });
+await browser.close();
+console.log("ok");
