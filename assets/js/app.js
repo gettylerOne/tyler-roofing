@@ -22,6 +22,12 @@
 
   var ARROW = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+  /* Logo lockup — original Tyler wordmark, recolored to the accent green. */
+  function logoHtml() {
+    return '<a class="logo" href="' + ROOT + 'index.html" aria-label="Tyler Roofing & Home Solutions home">' +
+      '<img src="' + ROOT + 'assets/img/tyler-logo-green.png" alt="Tyler Roofing & Home Solutions"></a>';
+  }
+
   /* =========================================================================
      HEADER
      ========================================================================= */
@@ -43,8 +49,7 @@
     var header = el(
       '<header class="topnav">' +
         '<div class="topnav-inner">' +
-          '<a class="logo" href="' + ROOT + 'index.html" aria-label="Tyler Roofing home">' +
-            '<img src="' + ROOT + 'assets/img/tyler-logo.png" alt="Tyler Roofing & Home Solutions"></a>' +
+          logoHtml() +
           '<nav class="navlinks" aria-label="Primary">' + links + "</nav>" +
           '<div class="nav-actions">' +
             '<a class="nav-phone mono" href="' + TEL + '">' + PHONE + "</a>" +
@@ -108,7 +113,7 @@
         '<div class="container">' +
           '<div class="footer-grid">' +
             '<div class="footer-brand">' +
-              '<a class="logo" href="' + ROOT + 'index.html"><img src="' + ROOT + 'assets/img/tyler-logo.png" alt="Tyler Roofing & Home Solutions"></a>' +
+              logoHtml() +
               "<p>A family-run home services company. Based in Columbiana, AL and serving the Birmingham metro since 2023.</p>" +
               '<button class="btn btn-primary" data-quote>Book a free inspection</button>' +
               '<div class="footer-follow">' +
@@ -118,8 +123,7 @@
               "</div>" +
             "</div>" +
             footerCol("Services", [
-              ["Roof replacement", "services.html#roof-replace"],
-              ["Roof repair", "services.html#roof-repair"],
+              ["Roof replacement & repairs", "services.html#roof-replace"],
               ["Storm & insurance", "storm.html"],
               ["All materials", "materials.html"],
               ["Service areas", "areas.html"],
@@ -180,9 +184,10 @@
   // Home-solutions flow — no insurance; homeowner just wants a job done.
   var PROJECT_TYPES_HOME = [
     { id: "paint", label: "Painting", hint: "Interior & exterior" },
-    { id: "deck", label: "Decks & porches", hint: "Build & repair" },
-    { id: "concrete", label: "Concrete", hint: "Drives, walks, patios" },
-    { id: "interior", label: "Interior work", hint: "Drywall, floors, trim, cabinets" },
+    { id: "gutter", label: "Gutters & exterior", hint: "Seamless, guards, fascia, soffit" },
+    { id: "drywall", label: "Drywall & interior", hint: "Drywall, trim, punch-list" },
+    { id: "deck", label: "Decks & fences", hint: "Build & repair" },
+    { id: "wash", label: "Pressure washing", hint: "House, drive & patios" },
     { id: "tree", label: "Tree removal", hint: "Limbs & full takedowns" },
     { id: "other", label: "Something else", hint: "Tell us what you need" },
   ];
@@ -575,7 +580,7 @@
               '<button class="modal-close" data-close aria-label="Close" style="position:absolute;top:16px;right:16px">&times;</button>' +
             "</div>" +
             '<div style="padding:32px 36px 36px">' +
-              '<div class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase">' + cat + "</div>" +
+              '<div class="mono" style="font-size:11px;letter-spacing:.03em;color:var(--accent);">' + cat + "</div>" +
               '<h3 class="h-display" style="font-size:32px;margin:10px 0 14px;color:var(--fg)">' + escHtml(title) + "</h3>" +
               '<p style="color:var(--muted);margin:0">' + escHtml(detail) + "</p>" +
               '<div style="margin-top:24px"><button class="btn btn-primary" data-quote data-close>Get a quote like this ' + "→</button></div>" +
@@ -634,7 +639,7 @@
       '<div class="rev-marquee-head">' +
         '<div class="left">' +
           '<span style="width:28px;height:1px;background:var(--accent)"></span>' +
-          '<div class="mono" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg);opacity:.85">What neighbors are saying</div>' +
+          '<div class="mono" style="font-size:11px;letter-spacing:.03em;color:var(--fg);opacity:.85">What neighbors are saying</div>' +
           '<div style="display:flex;align-items:center;gap:6px">' + stars +
             '<span class="mono" style="font-size:11px;color:var(--accent);letter-spacing:.06em;font-weight:600">5.0 · Google</span></div>' +
         "</div>" +
@@ -650,6 +655,57 @@
   /* Fill any empty <div class="stars" data-stars></div> with five stars. */
   function initStars() {
     $all(".stars[data-stars]").forEach(function (s) { s.innerHTML = star().repeat(5); });
+  }
+
+  /* =========================================================================
+     REVIEW CAROUSEL (reviews page) — three cards visible, arrows shift the row
+     one card at a time, viewport edges fade. Driven by the marquee review pool
+     (Mike Thompson is excluded; he's the featured quote above).
+     ========================================================================= */
+  function reviewCardHtml(r) {
+    var initials = r.name.split(" ").map(function (s) { return s[0]; }).slice(0, 2).join("");
+    return '<article class="review-card">' +
+      '<div class="rev-head"><span class="rev-avatar" style="background:' + r.color + '">' + initials + "</span>" +
+        '<span class="rev-name">' + r.name + "</span></div>" +
+      '<div class="stars" data-stars></div>' +
+      "<p>" + r.body + "</p>" +
+      '<div class="review-meta"><div class="where">' + r.project + " · " + r.town + "</div></div>" +
+    "</article>";
+  }
+
+  function initReviewCarousel() {
+    var root = $("[data-rev-carousel]");
+    if (!root || !window.MARQUEE_REVIEWS) return;
+    var viewport = $(".rev-viewport", root);
+    var track = $(".rev-track", root);
+    var prev = $(".rev-prev", root);
+    var next = $(".rev-next", root);
+    var reviews = window.MARQUEE_REVIEWS.filter(function (r) { return r.name !== "Mike Thompson"; });
+    track.innerHTML = reviews.map(reviewCardHtml).join("");
+    var index = 0, gap = 20;
+    function visibleCount() {
+      var w = window.innerWidth;
+      return w < 700 ? 1 : w < 1040 ? 2 : 3;
+    }
+    function maxIndex() { return Math.max(0, track.children.length - visibleCount()); }
+    function step() {
+      var vc = visibleCount();
+      var cw = (viewport.clientWidth - gap * (vc - 1)) / vc;
+      $all(".review-card", track).forEach(function (c) { c.style.flex = "0 0 " + cw + "px"; });
+      track.style.gap = gap + "px";
+      return cw + gap;
+    }
+    function update() {
+      index = Math.min(index, maxIndex());
+      track.style.transform = "translateX(" + (-index * step()) + "px)";
+      prev.disabled = index <= 0;
+      next.disabled = index >= maxIndex();
+    }
+    prev.addEventListener("click", function () { if (index > 0) { index--; update(); } });
+    next.addEventListener("click", function () { if (index < maxIndex()) { index++; update(); } });
+    var rt;
+    window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(update, 120); });
+    update();
   }
 
   /* =========================================================================
@@ -699,7 +755,7 @@
     var weight = opts.primary ? 700 : 500;
     var fontSize = opts.primary ? 13 : 11.5;
     var ring = opts.active ? "box-shadow:0 0 0 6px color-mix(in oklab,var(--accent) 25%,transparent);" : "";
-    var hq = opts.hq ? '<span style="font-family:JetBrains Mono,monospace;font-size:8.5px;letter-spacing:.1em;background:var(--accent);color:#fff;padding:1px 5px;border-radius:999px;margin-left:6px;text-transform:uppercase;font-weight:600">HQ</span>' : "";
+    var hq = opts.hq ? '<span style="font-family:JetBrains Mono,monospace;font-size:8.5px;letter-spacing:.03em;background:var(--accent);color:#fff;padding:1px 5px;border-radius:999px;margin-left:6px;font-weight:600">HQ</span>' : "";
     var label = opts.showLabel === false ? "" :
       '<span style="font-family:Manrope,sans-serif;font-size:' + fontSize + "px;font-weight:" + weight + ';color:var(--fg);background:color-mix(in oklab,var(--bg) 88%,transparent);padding:1px 6px;border-radius:6px;text-shadow:0 0 6px var(--bg)">' + name + hq + "</span>";
     var html =
@@ -714,14 +770,16 @@
     if (!window.L || !window.CITY_COORDS) return;
     var L = window.L;
     $all("[data-map]").forEach(function (canvas) {
+      if (canvas.dataset.map === "contact") { buildCoverageMap(L, canvas); return; }
       var interactive = canvas.dataset.map === "area";
       var showLabel = canvas.dataset.map !== "static";
       var activeId = "birmingham";
       var map = L.map(canvas, {
-        center: [33.38, -86.78], zoom: 10, zoomControl: true,
+        center: [33.38, -86.78], zoom: 10, zoomControl: false,
         scrollWheelZoom: false, attributionControl: false,
       });
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      L.control.zoom({ position: "topright" }).addTo(map);
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png", {
         maxZoom: 19, subdomains: "abcd",
       }).addTo(map);
       L.control.attribution({ position: "bottomleft", prefix: false })
@@ -758,6 +816,79 @@
     });
   }
 
+  /* Contact-page coverage map: a normal slippy map that names the counties we
+     serve when zoomed out, then hands off to the base map's own city labels as
+     you zoom in. Only counties we actually work are labelled — that's the
+     "areas we cover" signal. Approximate county centroids; tier matches
+     AL_SERVICE (core = Jefferson + Shelby). */
+  function buildCoverageMap(L, canvas) {
+    var COUNTIES = [
+      { n: "Jefferson",  lat: 33.55, lng: -86.90, tier: "core" },
+      { n: "Shelby",     lat: 33.26, lng: -86.66, tier: "core" },
+      { n: "Tuscaloosa", lat: 33.29, lng: -87.52, tier: "edge" },
+      { n: "St. Clair",  lat: 33.71, lng: -86.32, tier: "edge" },
+      { n: "Bibb",       lat: 32.99, lng: -87.13, tier: "edge" },
+      { n: "Talladega",  lat: 33.40, lng: -86.17, tier: "edge" },
+      { n: "Blount",     lat: 33.98, lng: -86.57, tier: "edge" },
+      { n: "Walker",     lat: 33.80, lng: -87.30, tier: "edge" },
+      { n: "Cullman",    lat: 34.13, lng: -86.87, tier: "edge" },
+      { n: "Chilton",    lat: 32.85, lng: -86.72, tier: "edge" },
+      { n: "Coosa",      lat: 32.94, lng: -86.25, tier: "edge" },
+      { n: "Montgomery", lat: 32.33, lng: -86.27, tier: "edge" }
+    ];
+    var map = L.map(canvas, {
+      center: [33.3, -86.8], zoom: 8, zoomControl: false,
+      scrollWheelZoom: false, attributionControl: false,
+      minZoom: 6, maxZoom: 14,
+    });
+    L.control.zoom({ position: "topright" }).addTo(map);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      maxZoom: 19, subdomains: "abcd",
+    }).addTo(map);
+    L.control.attribution({ position: "bottomleft", prefix: false })
+      .addAttribution("© OpenStreetMap, © CartoDB").addTo(map);
+
+    var countyLayer = L.layerGroup();
+    COUNTIES.forEach(function (c) {
+      L.marker([c.lat, c.lng], {
+        interactive: false, keyboard: false,
+        icon: L.divIcon({
+          className: "county-label county-" + c.tier,
+          html: c.n + " County", iconSize: [150, 18], iconAnchor: [75, 9],
+        }),
+      }).addTo(countyLayer);
+    });
+
+    // Dashed coverage ring around the service area, then frame the map to it on
+    // load. Montgomery is a far-south outlier — including it in the ring would
+    // force an unreadable zoom-out, so the ring is sized to the main cluster;
+    // Montgomery is still labelled when it's in frame.
+    var ringPts = COUNTIES
+      .filter(function (c) { return c.n !== "Montgomery"; })
+      .map(function (c) { return L.latLng(c.lat, c.lng); });
+    var center = L.latLngBounds(ringPts).getCenter();
+    var radius = 0;
+    ringPts.forEach(function (p) { radius = Math.max(radius, center.distanceTo(p)); });
+    radius *= 1.2;
+    L.circle(center, {
+      radius: radius, color: "#014520", weight: 1.5,
+      dashArray: "5 5", fillColor: "#014520", fillOpacity: 0.05,
+    }).addTo(map);
+    map.fitBounds(L.latLngBounds(COUNTIES.map(function (c) { return [c.lat, c.lng]; })), { padding: [24, 24] });
+
+    // County names show when zoomed out; once you zoom in the base map's own
+    // city labels take over (normal-map behaviour).
+    function toggleCounties() {
+      if (map.getZoom() <= 9) {
+        if (!map.hasLayer(countyLayer)) countyLayer.addTo(map);
+      } else if (map.hasLayer(countyLayer)) {
+        map.removeLayer(countyLayer);
+      }
+    }
+    toggleCounties();
+    map.on("zoomend", toggleCounties);
+  }
+
   /* =========================================================================
      ALABAMA COUNTY MAP (home page)
      Fetches the static SVG, tags service counties with tier + clickable,
@@ -790,6 +921,27 @@
   function initAlabamaMap() {
     var host = $("[data-al-map]");
     if (!host) return;
+    var pillsWrap = $("[data-cov-pills]");
+    var detail = $("[data-cov-detail]");
+
+    // County selector pills: core counties first, then edge alphabetically.
+    var order = Object.keys(AL_SERVICE).sort(function (a, b) {
+      var ra = AL_SERVICE[a].tier === "core" ? 0 : 1;
+      var rb = AL_SERVICE[b].tier === "core" ? 0 : 1;
+      return ra - rb || a.localeCompare(b);
+    });
+    if (pillsWrap) {
+      pillsWrap.innerHTML = order.map(function (c) {
+        return '<button class="cov-pill" type="button" data-tier="' +
+          AL_SERVICE[c].tier + '" data-county="' + c + '">' + c + "</button>";
+      }).join("");
+      pillsWrap.addEventListener("click", function (e) {
+        var b = e.target.closest(".cov-pill");
+        if (b) selectCounty(b.getAttribute("data-county"), host, pillsWrap, detail);
+      });
+    }
+    resetCountyDetail(detail);
+
     fetch("assets/img/alabama-counties.svg")
       .then(function (r) { return r.text(); })
       .then(function (svg) {
@@ -799,55 +951,64 @@
           if (!path) return;
           path.setAttribute("data-tier", AL_SERVICE[county].tier);
           path.setAttribute("data-clickable", "1");
-          path.addEventListener("click", function (e) { showCountyPop(county, e, host); });
-        });
-        // Click outside closes any open popover.
-        document.addEventListener("click", function (e) {
-          if (!host.contains(e.target)) closeCountyPop(host);
+          path.addEventListener("click", function () {
+            selectCounty(county, host, pillsWrap, detail);
+          });
         });
       })
       .catch(function () { host.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted)">Map unavailable.</div>'; });
   }
 
-  function closeCountyPop(host) {
-    var existing = $(".al-pop", host);
-    if (existing) existing.remove();
+  function resetCountyDetail(detail) {
+    if (!detail) return;
+    detail.classList.remove("is-filled");
+    detail.innerHTML = "";
   }
 
-  function showCountyPop(county, e, host) {
-    closeCountyPop(host);
-    var info = AL_SERVICE[county];
-    var hostName = (window.CITY_COORDS || {});
-    var links = info.cities.map(function (c) {
+  function countyCityLinks(info) {
+    var names = (window.CITY_COORDS || {});
+    return info.cities.map(function (c) {
       // Metro cities are slug strings with a dedicated page; fringe cities are
       // {name} objects with no page, so they render as plain labels.
       if (typeof c === "string") {
-        var label = (hostName[c] && hostName[c].name) || c;
+        var label = (names[c] && names[c].name) || c;
         var href = CITY_PAGE[c] || "areas.html";
-        return '<li><a href="' + href + '">' + label + " →</a></li>";
+        return '<a class="cov-city" href="' + href + '">' + label + "</a>";
       }
       return c.href
-        ? '<li><a href="' + c.href + '">' + c.name + " →</a></li>"
-        : '<li><span class="np">' + c.name + "</span></li>";
+        ? '<a class="cov-city" href="' + c.href + '">' + c.name + "</a>"
+        : '<span class="cov-city np">' + c.name + "</span>";
     }).join("");
-    var pop = el(
-      '<div class="al-pop" role="dialog">' +
-        '<button class="close" aria-label="Close">&times;</button>' +
-        '<div class="county">' + county + " County</div>" +
-        '<h4>Cities we serve</h4>' +
-        '<ul>' + links + '</ul>' +
-      "</div>"
-    );
-    // Position relative to the host using the click point.
-    var hostRect = host.getBoundingClientRect();
-    var x = e.clientX - hostRect.left;
-    var y = e.clientY - hostRect.top;
-    pop.style.left = x + "px";
-    pop.style.top = y + "px";
-    host.appendChild(pop);
-    $(".close", pop).addEventListener("click", function () { closeCountyPop(host); });
-    // Stop the click bubbling so the outside-click handler doesn't immediately close it.
-    pop.addEventListener("click", function (ev) { ev.stopPropagation(); });
+  }
+
+  function selectCounty(county, host, pillsWrap, detail) {
+    var info = AL_SERVICE[county];
+    if (!info) return;
+    if (pillsWrap) {
+      $all(".cov-pill", pillsWrap).forEach(function (p) {
+        p.classList.toggle("is-active", p.getAttribute("data-county") === county);
+      });
+    }
+    if (host) {
+      $all('path[data-active="1"]', host).forEach(function (p) {
+        p.removeAttribute("data-active");
+      });
+      var path = host.querySelector('path[id="' + county + '"]');
+      if (path) {
+        path.setAttribute("data-active", "1");
+        // Draw last so its accent outline isn't clipped by neighbouring counties.
+        path.parentNode.appendChild(path);
+      }
+    }
+    if (detail) {
+      detail.classList.add("is-filled");
+      detail.innerHTML =
+        '<div class="cov-detail-head">' +
+          '<span class="cov-detail-county">' + county + " County</span>" +
+          (info.tier === "core" ? '<span class="cov-badge">Core area</span>' : "") +
+        "</div>" +
+        '<div class="cov-cities">' + countyCityLinks(info) + "</div>";
+    }
   }
 
   function updateAreaDetail(id) {
@@ -1039,6 +1200,7 @@
     initChecklist();
     initServiceAnchors();
     initWorkFilter();
+    initReviewCarousel();
     initStars();
     initReviewPopup();
     if ($(".area-detail")) updateAreaDetail("birmingham");

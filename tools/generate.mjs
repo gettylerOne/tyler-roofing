@@ -138,8 +138,9 @@ const CITIES = {
 
 /* ── Fringe-area cities ─────────────────────────────────────────────────────
    Counties on the edge of the service area. These get a LIGHTER landing page
-   (no invented neighborhoods or job history) and are linked only from the
-   home-page county map — they are intentionally NOT in the areas.html index. */
+   (no invented neighborhoods or job history). They are linked from the
+   home-page county map and from the "surrounding counties" group in the
+   hand-built areas.html index — keep that index in sync when adding cities. */
 const FRINGE_CITIES = {
   tuscaloosa:     { name: "Tuscaloosa",   county: "Tuscaloosa County", distance: "~60 mi west" },
   northport:      { name: "Northport",    county: "Tuscaloosa County", distance: "~62 mi west" },
@@ -236,15 +237,6 @@ const MATERIALS = {
   },
 };
 
-const SERVICES = [
-  ["01", "Roof Replacement", "roof-replace"],
-  ["02", "Repairs & Leaks", "roof-repair"],
-  ["03", "Storm & Insurance", "storm"],
-  ["04", "Gutters & Exteriors", "gutters"],
-  ["05", "Commercial & Multi-Family", "commercial"],
-  ["06", "Home Solutions", "home"],
-];
-
 /* ── Helpers ──────────────────────────────────────────────────────────── */
 const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 const pad = (n) => String(n).padStart(2, "0");
@@ -295,8 +287,6 @@ function cityPage(slug, c) {
     `<div class="nbhd"><span class="nn mono">${pad(i + 1)}</span><span class="nv">${esc(n)}</span></div>`).join("\n        ");
   const jobs = c.jobs.map((j, i) =>
     `<div class="job"><div class="n mono">${pad(i + 1)}</div><div class="v">${esc(j)}</div></div>`).join("\n        ");
-  const services = SERVICES.map((s) =>
-    `<a href="../services.html#${s[2]}"><div class="si mono">${s[0]}</div><div class="sn">${esc(s[1])}</div></a>`).join("\n        ");
   const nearby = Object.keys(CITIES).filter((k) => k !== slug).map((k) =>
     `<a class="chip" href="${k}.html">Roofers in ${esc(CITIES[k].name)}</a>`).join("\n        ");
 
@@ -333,7 +323,7 @@ function cityPage(slug, c) {
       <div class="city-cols">
         <div>
           <div class="section-head">
-            <h2>Where we work<br>in ${esc(c.name)}.</h2>
+            <h2>Where we work<br><i>in ${esc(c.name)}.</i></h2>
           </div>
           <p style="margin-top:22px;color:color-mix(in oklab,var(--fg) 70%,transparent);font-size:15.5px;line-height:1.6">Not exhaustive — call if you don't see yours. Inside the metro we'll come out.</p>
         </div>
@@ -373,17 +363,6 @@ function cityPage(slug, c) {
     </div>
   </section>
 
-  <section class="surface bordered-top pad-y-lg">
-    <div class="container">
-      <div class="section-head">
-        <h2>The full list of services.</h2>
-      </div>
-      <div class="cityserv-grid">
-        ${services}
-      </div>
-    </div>
-  </section>
-
   <section class="pad-y-lg">
     <div class="container">
       <div class="section-head">
@@ -407,8 +386,6 @@ ${closingCta}`;
 /* ── Fringe-city page (lighter, no invented specifics) ──────────────────── */
 function fringeCityPage(slug, c) {
   const pitch = c.pitch || `${c.name} sits in ${c.county}, about ${c.distance} from our Birmingham-metro base. It's on the fringe of where we regularly work, but we still take roofing and home-solutions jobs out this way. Call and we'll give you a straight answer on whether we can get to you and when.`;
-  const services = SERVICES.map((s) =>
-    `<a href="../services.html#${s[2]}"><div class="si mono">${s[0]}</div><div class="sn">${esc(s[1])}</div></a>`).join("\n        ");
 
   const body = `
   <section class="city-hero">
@@ -451,17 +428,6 @@ function fringeCityPage(slug, c) {
           <p>If a storm came through ${esc(c.county)} and you think you've got damage, we can walk the roof, document it, and coordinate the claim with your carrier — same as we do across the metro.</p>
           <a class="btn btn-ghost" href="../storm.html">See storm response →</a>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pad-y-lg">
-    <div class="container">
-      <div class="section-head">
-        <h2>The full list of services.</h2>
-      </div>
-      <div class="cityserv-grid">
-        ${services}
       </div>
     </div>
   </section>
@@ -554,7 +520,7 @@ function materialPage(slug, m) {
       <div class="mat-proc-grid">
         <div class="mat-proc-sticky">
           <div class="section-head">
-            <h2>How ${esc(m.short.toLowerCase())}<br>goes on a Birmingham home.</h2>
+            <h2>How ${esc(m.short.toLowerCase())}<br><i>goes on a Birmingham home.</i></h2>
           </div>
           <p>Step-by-step. Most jobs run 1-3 days on the roof depending on size, pitch, and weather.</p>
         </div>
