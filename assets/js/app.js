@@ -1040,31 +1040,31 @@
   /* =========================================================================
      CONTACT FORM
      ========================================================================= */
-  function initHeroForm() {
-    var form = $("#hero-form");
-    if (!form) return;
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      $all(".err", form).forEach(function (x) { x.remove(); });
-      function fv(n) { return form.querySelector('[name="' + n + '"]').value; }
-      var f = { name: fv("name"), phone: fv("phone"), zip: fv("zip"), need: fv("need") };
-      var errs = {};
-      if (!f.name.trim()) errs.name = "Required";
-      if (!/^\d{10}$/.test(f.phone.replace(/\D/g, ""))) errs.phone = "10 digits";
-      if (!/^\d{5}$/.test(f.zip.trim())) errs.zip = "5 digits";
-      if (!f.need) errs.need = "Pick one";
-      Object.keys(errs).forEach(function (k) {
-        var field = form.querySelector('[name="' + k + '"]').closest(".field");
-        field.appendChild(el('<div class="err">' + errs[k] + "</div>"));
+  function initLeadForms() {
+    $all(".lead-form").forEach(function (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        $all(".err", form).forEach(function (x) { x.remove(); });
+        function fv(n) { return form.querySelector('[name="' + n + '"]').value; }
+        var f = { name: fv("name"), phone: fv("phone"), zip: fv("zip"), need: fv("need") };
+        var errs = {};
+        if (!f.name.trim()) errs.name = "Required";
+        if (!/^\d{10}$/.test(f.phone.replace(/\D/g, ""))) errs.phone = "10 digits";
+        if (!/^\d{5}$/.test(f.zip.trim())) errs.zip = "5 digits";
+        if (!f.need) errs.need = "Pick one";
+        Object.keys(errs).forEach(function (k) {
+          var field = form.querySelector('[name="' + k + '"]').closest(".field");
+          field.appendChild(el('<div class="err">' + errs[k] + "</div>"));
+        });
+        if (Object.keys(errs).length) return;
+        form.parentNode.replaceChild(el(
+          '<div class="hero-form hero-form-sent">' +
+            '<div class="lbl">✓ Request received</div>' +
+            '<h3 class="h-display">We\'ll call to set up your free inspection.</h3>' +
+            '<p>We\'ll reach out at the number you gave us, usually the same day. Need us sooner? Call <a href="' + TEL + '">' + PHONE + "</a>.</p>" +
+          "</div>"
+        ), form);
       });
-      if (Object.keys(errs).length) return;
-      form.parentNode.replaceChild(el(
-        '<div class="hero-form hero-form-sent">' +
-          '<div class="lbl">✓ Request received</div>' +
-          '<h3 class="h-display">We\'ll call to set up your free inspection.</h3>' +
-          '<p>We\'ll reach out at the number you gave us, usually the same day. Need us sooner? Call <a href="' + TEL + '">' + PHONE + "</a>.</p>" +
-        "</div>"
-      ), form);
     });
   }
 
@@ -1238,7 +1238,7 @@
     initMarquee();
     initMaps();
     initAlabamaMap();
-    initHeroForm();
+    initLeadForms();
     initContactForm();
     initChecklist();
     initServiceAnchors();

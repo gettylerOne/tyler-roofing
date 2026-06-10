@@ -89,11 +89,50 @@
   </div>
 
   <section class="closing-cta">
-    <div class="container">
-      <h2 class="h-display">Free inspection. Written quote. <i>No pressure.</i></h2>
-      <div class="closing-cta-actions">
-        <button class="btn btn-accent" data-quote>Free roof inspection →</button>
-        <a class="call-line" href="tel:+12055156968"><span class="lbl mono">or call</span><span class="num h-display">205-515-6968</span></a>
+    <div class="container closing-cta-grid">
+      <div class="closing-cta-copy">
+        <h2 class="h-display">Free inspection. Written quote. <i>No pressure.</i></h2>
+        <div class="closing-cta-actions">
+          <button class="btn btn-accent" data-quote>Free roof inspection →</button>
+          <a class="call-line" href="tel:+12055156968"><span class="lbl mono">or call</span><span class="num h-display">205-515-6968</span></a>
+        </div>
+      </div>
+      <div class="closing-cta-panel">
+        <form class="hero-form lead-form" novalidate>
+          <div class="hf-head">
+            <h3 class="hf-title">Schedule a Free Inspection</h3>
+            <p class="hf-reassure">No pressure. No obligation.</p>
+          </div>
+          <div class="hf-row">
+            <div class="field">
+              <label for="cl-name">Name</label>
+              <input id="cl-name" name="name" type="text" placeholder="First &amp; last">
+            </div>
+            <div class="field">
+              <label for="cl-phone">Phone</label>
+              <input id="cl-phone" name="phone" type="tel" placeholder="(205) 555-0123">
+            </div>
+          </div>
+          <div class="hf-row">
+            <div class="field">
+              <label for="cl-zip">ZIP code</label>
+              <input id="cl-zip" name="zip" type="text" inputmode="numeric" placeholder="35051">
+            </div>
+            <div class="field">
+              <label for="cl-need">What do you need?</label>
+              <select id="cl-need" name="need">
+                <option value="" disabled selected>Choose one…</option>
+                <option>Roof leak</option>
+                <option>Storm damage</option>
+                <option>Replacement</option>
+                <option>Not sure</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-accent" type="submit">Book Free Inspection
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
       </div>
     </div>
   </section>
