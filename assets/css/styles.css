@@ -67,7 +67,7 @@ button{font:inherit;color:inherit}
   transition:transform .15s,background .15s,border-color .15s;
 }
 .btn svg{flex-shrink:0}
-.btn-primary{background:var(--fg);color:var(--bg)}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
 .btn-primary:hover{transform:translateY(-1px)}
 .btn-accent{background:var(--accent);color:var(--accent-ink)}
 .btn-accent:hover{transform:translateY(-1px)}
@@ -197,8 +197,8 @@ button{font:inherit;color:inherit}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 .hero{
-  position:relative;min-height:min(72vh,700px);
-  display:flex;align-items:flex-end;overflow:hidden;
+  position:relative;min-height:min(90vh,900px);
+  display:flex;align-items:center;overflow:hidden;
   border-bottom:1px solid var(--line);
 }
 .hero-bg{position:absolute;inset:0}
@@ -206,25 +206,29 @@ button{font:inherit;color:inherit}
 .hero-bg::after{
   content:"";position:absolute;inset:0;
   background:
-    linear-gradient(90deg,
-      rgba(8,18,12,.70) 0%,
-      rgba(8,18,12,.45) 32%,
-      rgba(8,18,12,0) 62%),
+    linear-gradient(100deg,
+      rgba(18,15,11,.74) 0%,
+      rgba(18,15,11,.60) 34%,
+      rgba(18,15,11,.30) 54%,
+      rgba(18,15,11,0) 80%),
     linear-gradient(180deg,
-      rgba(8,18,12,0) 0%,
-      rgba(8,18,12,0) 22%,
-      rgba(8,18,12,.50) 50%,
-      rgba(8,18,12,.86) 74%,
-      rgba(8,18,12,.94) 100%);
+      rgba(18,15,11,0) 60%,
+      rgba(18,15,11,.26) 100%);
 }
-.hero-inner{position:relative;padding-top:120px;padding-bottom:96px;text-align:center}
+.hero-inner{
+  position:relative;padding-top:80px;padding-bottom:80px;text-align:left;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(430px,480px);
+  gap:44px;align-items:center;
+}
+.hero-copy{min-width:0}
+.hero-panel{min-width:0}
 .hero h1{
-  font-size:clamp(44px,6vw,92px);margin:0 auto;max-width:1200px;color:var(--bg);
-  text-shadow:0 2px 24px rgba(8,18,12,.45);
+  font-size:clamp(38px,calc(4.4vw - 8px),56px);margin:0;color:var(--bg);
+  white-space:nowrap;text-shadow:0 2px 24px rgba(8,18,12,.45);
 }
 .hero-sub{
-  margin:28px auto 0;font-size:17.5px;line-height:1.55;
-  color:color-mix(in oklab,var(--bg) 88%,transparent);max-width:640px;
+  margin:24px 0 0;font-size:17.5px;line-height:1.55;
+  color:color-mix(in oklab,var(--bg) 88%,transparent);max-width:520px;
 }
 .hero-cta{
   margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center;
@@ -239,15 +243,50 @@ button{font:inherit;color:inherit}
 }
 
 .hero-checks{
-  margin:30px 0 0;padding:0;list-style:none;
-  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 34px;
+  margin:26px 0 0;padding:0;list-style:none;
+  display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;gap:10px 22px;
 }
 .hero-checks li{
-  display:flex;align-items:center;gap:10px;
-  font-size:19px;font-weight:600;
-  color:color-mix(in oklab,var(--bg) 90%,transparent);
+  display:flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:600;letter-spacing:.01em;
+  color:color-mix(in oklab,var(--bg) 92%,transparent);
 }
-.hero-checks li svg{flex-shrink:0;width:26px;height:26px}
+.hero-checks li svg{flex-shrink:0;width:18px;height:18px}
+.hero-trust{
+  margin:18px 0 0;font-size:12.5px;letter-spacing:.04em;
+  color:color-mix(in oklab,var(--bg) 76%,transparent);
+}
+
+/* ── Hero lead form ──────────────────────────────────────────────────────── */
+.hero-form{
+  margin:0;width:100%;text-align:left;
+  background:var(--bg);border:1px solid var(--line);border-radius:20px;
+  padding:34px;box-shadow:0 24px 60px rgba(8,18,12,.38);
+  display:flex;flex-direction:column;gap:22px;
+}
+.hero-form .hf-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hero-form .field label{margin-bottom:7px;color:var(--fg);opacity:.9}
+.hero-form .field input,.hero-form .field select{padding:18px 16px}
+.hero-form .field input::placeholder{color:#6b756d}
+.hero-form .btn{padding:18px 20px;font-size:15px}
+.hf-head{display:flex;flex-direction:column;gap:5px;margin-bottom:2px}
+.hf-title{margin:0;font-family:var(--display);font-weight:600;font-size:23px;line-height:1.1;color:var(--fg)}
+.hf-reassure{margin:0;font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--accent)}
+.hf-foot{margin:0;padding-top:16px;border-top:1px solid var(--line);text-align:center;font-size:13px;color:var(--muted)}
+.hf-foot a{color:var(--accent);font-weight:700;font-family:var(--mono);letter-spacing:.02em}
+.hero-form .btn{width:100%;justify-content:center}
+.hero-form-sent{text-align:center;align-items:center;gap:8px}
+.hero-form-sent .lbl{color:var(--accent);font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.hero-form-sent h3{font-size:24px;margin:0;color:var(--fg)}
+.hero-form-sent p{color:var(--muted);font-size:14.5px;line-height:1.5;margin:0}
+.hero-form-sent a{color:var(--accent);font-weight:600}
+@media (max-width:1080px){
+  .hero{min-height:70vh}
+  .hero-inner{grid-template-columns:1fr;gap:32px;align-items:start;padding-top:100px}
+  .hero-panel{max-width:560px}
+  .hero h1{white-space:normal}
+}
+@media (max-width:560px){.hero-form .hf-row{grid-template-columns:1fr}}
 
 /* ── Hero drone badge ────────────────────────────────────────────────────── */
 /* =========================================================================

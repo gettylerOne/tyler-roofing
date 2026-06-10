@@ -21,20 +21,55 @@
       <img src="assets/img/hero-home.jpg" alt="Aerial view of a Tyler Roofing project, a tile-shingle roof on a brick-and-stucco Birmingham-metro home">
     </div>
     <div class="container hero-inner">
-      <h1 class="h-display">Whole Home Solutions<br>from the roof down</h1>
-      <p class="hero-sub">Built like it's our own house. Honest inspections, fair quotes, and work we stand behind. Family-run in Birmingham.</p>
-      <div class="hero-cta">
-        <button class="btn btn-accent" data-quote>Free roof inspection
+      <div class="hero-copy">
+        <h1 class="h-display">Whole-Home Protection,<br>Starting at the Roof</h1>
+        <p class="hero-sub">Family-run in Birmingham. Honest inspections, clear quotes, and workmanship we stand behind.</p>
+        <ul class="hero-checks">
+          <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#5aa687"/><path d="M7.3 12.4l3 3 6.4-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Roofing</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#5aa687"/><path d="M7.3 12.4l3 3 6.4-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Whole home</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#5aa687"/><path d="M7.3 12.4l3 3 6.4-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Tree work</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#5aa687"/><path d="M7.3 12.4l3 3 6.4-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Storm damage</li>
+        </ul>
+        <p class="hero-trust mono">Licensed &amp; insured · Local Birmingham team</p>
+      </div>
+      <div class="hero-panel">
+      <form class="hero-form" id="hero-form" novalidate>
+        <div class="hf-head">
+          <h2 class="hf-title">Schedule a Free Inspection</h2>
+          <p class="hf-reassure">No pressure. No obligation.</p>
+        </div>
+        <div class="hf-row">
+          <div class="field">
+            <label for="hf-name">Name</label>
+            <input id="hf-name" name="name" type="text" placeholder="First &amp; last">
+          </div>
+          <div class="field">
+            <label for="hf-phone">Phone</label>
+            <input id="hf-phone" name="phone" type="tel" placeholder="(205) 555-0123">
+          </div>
+        </div>
+        <div class="hf-row">
+          <div class="field">
+            <label for="hf-zip">ZIP code</label>
+            <input id="hf-zip" name="zip" type="text" inputmode="numeric" placeholder="35051">
+          </div>
+          <div class="field">
+            <label for="hf-need">What do you need?</label>
+            <select id="hf-need" name="need">
+              <option value="" disabled selected>Choose one…</option>
+              <option>Roof leak</option>
+              <option>Storm damage</option>
+              <option>Replacement</option>
+              <option>Not sure</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-accent" type="submit">Book Free Inspection
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <a class="hero-call mono" href="tel:+12055156968">or call <span class="num">205-515-6968</span></a>
+        <p class="hf-foot">Prefer to call? <a href="tel:+12055156968">205-515-6968</a></p>
+      </form>
       </div>
-      <ul class="hero-checks">
-        <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#5aa687"/><path d="M7.3 12.4l3 3 6.4-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Roofing</li>
-        <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#5aa687"/><path d="M7.3 12.4l3 3 6.4-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Exterior</li>
-        <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#5aa687"/><path d="M7.3 12.4l3 3 6.4-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Whole home</li>
-        <li><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#5aa687"/><path d="M7.3 12.4l3 3 6.4-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Tree work</li>
-      </ul>
     </div>
   </section>
 
@@ -43,10 +78,10 @@
     <div class="container">
       <div class="solutions-top">
         <div class="solutions-head">
-          <h2 class="h-display"><i>Your roof,</i><br>and everything under it.</h2>
+          <h2 class="h-display"><i>Your Roof,</i><br>and everything under it.</h2>
           <p class="solutions-intro">Roofing is where we started, but it's not where we stop. Whatever's gone wrong on the house, odds are we handle it. Here's what folks usually call us about.</p>
         </div>
-        <button class="btn btn-primary solutions-top-cta" data-quote="home">Get a free quote
+        <button class="btn btn-primary solutions-top-cta" data-quote="home">Get Free Quote
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
@@ -99,7 +134,7 @@
 
       </div>
       <div style="margin-top:40px">
-        <button class="btn btn-primary" data-quote="home">Get a free quote
+        <button class="btn btn-primary" data-quote="home">Get Free Quote
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
@@ -125,7 +160,7 @@
             <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7l3 3 6-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>An honest call on repair vs. replace, same day</span></li>
           </ul>
           <div class="drone-actions">
-            <button class="btn btn-primary" data-quote>Free roof inspection →</button>
+            <button class="btn btn-primary" data-quote>Book Free Roof Inspection →</button>
             <a class="btn btn-ghost" href="tel:+12055156968">Or call 205-515-6968</a>
           </div>
         </div>
@@ -161,7 +196,7 @@
         <div class="cov-detail" data-cov-detail aria-live="polite"></div>
       </div>
       <div class="cov-foot">
-        <button class="btn btn-primary" data-quote>Free roof inspection →</button>
+        <button class="btn btn-primary" data-quote>Book Free Roof Inspection →</button>
         <span class="mono cov-foot-call">Not on the list? Call us anyway: 205-515-6968</span>
       </div>
     </div>
@@ -184,9 +219,9 @@
   <!-- ── CLOSING CTA ──────────────────────────────────────────────────── -->
   <section class="closing-cta">
     <div class="container">
-      <h2 class="h-display">Free inspection. Written quote. <i>Then it's your call.</i></h2>
+      <h2 class="h-display">Free inspection. Written quote. <i>No pressure.</i></h2>
       <div class="closing-cta-actions">
-        <button class="btn btn-accent" data-quote>Free roof inspection →</button>
+        <button class="btn btn-accent" data-quote>Book Free Roof Inspection →</button>
         <a class="call-line" href="tel:+12055156968">
           <span class="lbl mono">or call</span>
           <span class="num h-display">205-515-6968</span>

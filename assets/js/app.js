@@ -681,31 +681,45 @@
     var prev = $(".rev-prev", root);
     var next = $(".rev-next", root);
     var reviews = window.MARQUEE_REVIEWS.filter(function (r) { return r.name !== "Mike Thompson"; });
-    track.innerHTML = reviews.map(reviewCardHtml).join("");
-    var index = 0, gap = 20;
+    var n = reviews.length, gap = 20, vc, index, animating = false;
     function visibleCount() {
       var w = window.innerWidth;
       return w < 700 ? 1 : w < 1040 ? 2 : 3;
     }
-    function maxIndex() { return Math.max(0, track.children.length - visibleCount()); }
-    function step() {
-      var vc = visibleCount();
+    function cardStep() {
       var cw = (viewport.clientWidth - gap * (vc - 1)) / vc;
       $all(".review-card", track).forEach(function (c) { c.style.flex = "0 0 " + cw + "px"; });
-      track.style.gap = gap + "px";
       return cw + gap;
     }
-    function update() {
-      index = Math.min(index, maxIndex());
-      track.style.transform = "translateX(" + (-index * step()) + "px)";
-      prev.disabled = index <= 0;
-      next.disabled = index >= maxIndex();
+    function position(animate) {
+      track.style.transition = animate ? "" : "none";
+      track.style.transform = "translateX(" + (-index * cardStep()) + "px)";
+      if (!animate) { void track.offsetWidth; track.style.transition = ""; }
     }
-    prev.addEventListener("click", function () { if (index > 0) { index--; update(); } });
-    next.addEventListener("click", function () { if (index < maxIndex()) { index++; update(); } });
+    function build() {
+      vc = Math.min(visibleCount(), n);
+      // Clone last vc cards onto the front and first vc onto the end for a seamless loop.
+      var loop = reviews.slice(n - vc).concat(reviews, reviews.slice(0, vc));
+      track.innerHTML = loop.map(reviewCardHtml).join("");
+      index = vc;
+      position(false);
+    }
+    track.addEventListener("transitionend", function () {
+      animating = false;
+      if (index >= n + vc) { index -= n; position(false); }
+      else if (index < vc) { index += n; position(false); }
+    });
+    function go(dir) {
+      if (animating) return;
+      animating = true;
+      index += dir;
+      position(true);
+    }
+    prev.addEventListener("click", function () { go(-1); });
+    next.addEventListener("click", function () { go(1); });
     var rt;
-    window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(update, 120); });
-    update();
+    window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(build, 120); });
+    build();
   }
 
   /* =========================================================================
@@ -1026,6 +1040,34 @@
   /* =========================================================================
      CONTACT FORM
      ========================================================================= */
+  function initHeroForm() {
+    var form = $("#hero-form");
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      $all(".err", form).forEach(function (x) { x.remove(); });
+      function fv(n) { return form.querySelector('[name="' + n + '"]').value; }
+      var f = { name: fv("name"), phone: fv("phone"), zip: fv("zip"), need: fv("need") };
+      var errs = {};
+      if (!f.name.trim()) errs.name = "Required";
+      if (!/^\d{10}$/.test(f.phone.replace(/\D/g, ""))) errs.phone = "10 digits";
+      if (!/^\d{5}$/.test(f.zip.trim())) errs.zip = "5 digits";
+      if (!f.need) errs.need = "Pick one";
+      Object.keys(errs).forEach(function (k) {
+        var field = form.querySelector('[name="' + k + '"]').closest(".field");
+        field.appendChild(el('<div class="err">' + errs[k] + "</div>"));
+      });
+      if (Object.keys(errs).length) return;
+      form.parentNode.replaceChild(el(
+        '<div class="hero-form hero-form-sent">' +
+          '<div class="lbl">✓ Request received</div>' +
+          '<h3 class="h-display">We\'ll call to set up your free inspection.</h3>' +
+          '<p>We\'ll reach out at the number you gave us, usually the same day. Need us sooner? Call <a href="' + TEL + '">' + PHONE + "</a>.</p>" +
+        "</div>"
+      ), form);
+    });
+  }
+
   function initContactForm() {
     var form = $("#contact-form");
     if (!form) return;
@@ -1196,6 +1238,7 @@
     initMarquee();
     initMaps();
     initAlabamaMap();
+    initHeroForm();
     initContactForm();
     initChecklist();
     initServiceAnchors();
