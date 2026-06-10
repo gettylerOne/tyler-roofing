@@ -305,10 +305,10 @@ const closingCta = `
               <label for="cl-need">What do you need?</label>
               <select id="cl-need" name="need">
                 <option value="" disabled selected>Choose one…</option>
-                <option>Roof leak</option>
-                <option>Storm damage</option>
-                <option>Replacement</option>
-                <option>Not sure</option>
+                <option>Roofing</option>
+                <option>Storm Damage</option>
+                <option>Home solutions</option>
+                <option>Other</option>
               </select>
             </div>
           </div>

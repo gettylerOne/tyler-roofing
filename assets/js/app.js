@@ -54,7 +54,7 @@
           '<div class="nav-actions">' +
             '<a class="nav-phone mono" href="' + TEL + '">' + PHONE + "</a>" +
             '<button class="btn btn-accent" data-quote>' +
-              '<span class="book-label-full">Book inspection</span>' +
+              '<span class="book-label-full">Book Free Inspection</span>' +
               '<span class="book-label-short">Book</span>' + ARROW + "</button>" +
             '<button class="mobile-toggle" aria-label="Open menu">' +
               '<svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M0 1h16M0 6h16M0 11h16" stroke="currentColor" stroke-width="1.5"/></svg>' +
@@ -68,7 +68,7 @@
       '<div class="mobile-sheet">' +
         '<button class="mobile-close" aria-label="Close menu">&times;</button>' +
         NAV.map(function (n) { return '<a href="' + ROOT + n[0] + '">' + n[1] + "</a>"; }).join("") +
-        '<button class="btn btn-accent" data-quote>Book inspection</button>' +
+        '<button class="btn btn-accent" data-quote>Book Free Inspection</button>' +
         '<a class="mono sheet-phone" href="' + TEL + '">' + PHONE + "</a>" +
       "</div>"
     );
@@ -115,7 +115,7 @@
             '<div class="footer-brand">' +
               logoHtml() +
               "<p>A family-run home services company. Based in Columbiana, AL and serving the Birmingham metro since 2023.</p>" +
-              '<button class="btn btn-primary" data-quote>Book a free inspection</button>' +
+              '<button class="btn btn-primary" data-quote>Book Free Inspection</button>' +
               '<div class="footer-follow">' +
                 '<div class="lbl">Follow along</div>' +
                 '<div class="socials">' + socials + "</div>" +
@@ -176,7 +176,7 @@
   var PROJECT_TYPES_ROOF = [
     { id: "replace", label: "Roof replacement", hint: "Full tear-off & install" },
     { id: "repair", label: "Repair or leak", hint: "Spot fix, valley, flashing" },
-    { id: "storm", label: "Storm / insurance claim", hint: "We coordinate with adjuster" },
+    { id: "storm", label: "Storm Damage", hint: "We coordinate with adjuster" },
     { id: "gutter", label: "Gutters / exterior", hint: "Seamless, guards, fascia" },
     { id: "inspect", label: "Just an inspection", hint: "Free roof inspection + report" },
     { id: "other", label: "Something else", hint: "Tell us what's going on" },
@@ -224,9 +224,12 @@
   var QUOTE_CITIES = ["Hoover", "Pelham", "Helena", "Alabaster", "Birmingham"];
   var SLOTS = ["7:30 – 9:30a", "9:30 – 11:30a", "12:30 – 2:30p", "2:30 – 4:30p", "4:30 – 6:30p"];
 
-  function openQuote(mode) {
+  function openQuote(mode, prefill, only) {
     var isHome = mode === "home";
     var PROJECT_TYPES = isHome ? PROJECT_TYPES_HOME : PROJECT_TYPES_ROOF;
+    if (only) {
+      PROJECT_TYPES = PROJECT_TYPES.filter(function (o) { return only.indexOf(o.id) !== -1; });
+    }
     var URGENCY = isHome ? URGENCY_HOME : URGENCY_ROOF;
     var FLOW = isHome
       ? ["project", "place", "contact", "time", "confirm"]
@@ -236,6 +239,11 @@
     var data = { project: "", property: "", urgency: "", carrier: "", claim: "",
                  city: "", address: "", name: "", email: "", phone: "",
                  date: null, slot: "", notes: "" };
+    if (prefill) {
+      Object.keys(prefill).forEach(function (k) {
+        if (prefill[k] && data.hasOwnProperty(k)) data[k] = prefill[k];
+      });
+    }
     var errors = {};
     var today = new Date();
     var view = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -1041,29 +1049,24 @@
      CONTACT FORM
      ========================================================================= */
   function initLeadForms() {
+    // Mini lead forms feed the full booking modal, carrying over anything
+    // already typed (name, phone, need → flow/project, ZIP → notes).
+    // "Home solutions" opens the home-services flow; the rest use the roof flow.
+    var NEED_TO_PROJECT = { "Storm Damage": "storm", "Other": "other" };
+    // "Roofing" trims step 1 to roofing-only choices (no storm/gutter noise).
+    var ROOFING_ONLY = ["replace", "repair", "inspect", "other"];
     $all(".lead-form").forEach(function (form) {
       form.addEventListener("submit", function (e) {
         e.preventDefault();
-        $all(".err", form).forEach(function (x) { x.remove(); });
-        function fv(n) { return form.querySelector('[name="' + n + '"]').value; }
-        var f = { name: fv("name"), phone: fv("phone"), zip: fv("zip"), need: fv("need") };
-        var errs = {};
-        if (!f.name.trim()) errs.name = "Required";
-        if (!/^\d{10}$/.test(f.phone.replace(/\D/g, ""))) errs.phone = "10 digits";
-        if (!/^\d{5}$/.test(f.zip.trim())) errs.zip = "5 digits";
-        if (!f.need) errs.need = "Pick one";
-        Object.keys(errs).forEach(function (k) {
-          var field = form.querySelector('[name="' + k + '"]').closest(".field");
-          field.appendChild(el('<div class="err">' + errs[k] + "</div>"));
-        });
-        if (Object.keys(errs).length) return;
-        form.parentNode.replaceChild(el(
-          '<div class="hero-form hero-form-sent">' +
-            '<div class="lbl">✓ Request received</div>' +
-            '<h3 class="h-display">We\'ll call to set up your free inspection.</h3>' +
-            '<p>We\'ll reach out at the number you gave us, usually the same day. Need us sooner? Call <a href="' + TEL + '">' + PHONE + "</a>.</p>" +
-          "</div>"
-        ), form);
+        function fv(n) { var i = form.querySelector('[name="' + n + '"]'); return i ? i.value : ""; }
+        var need = fv("need");
+        var zip = fv("zip").trim();
+        openQuote(need === "Home solutions" ? "home" : "roof", {
+          name: fv("name").trim(),
+          phone: fv("phone").trim(),
+          project: NEED_TO_PROJECT[need] || "",
+          notes: zip ? "ZIP: " + zip : ""
+        }, need === "Roofing" ? ROOFING_ONLY : null);
       });
     });
   }
@@ -1230,7 +1233,13 @@
     buildFooter();
     document.addEventListener("click", function (e) {
       var t = e.target.closest("[data-quote]");
-      if (t) { e.preventDefault(); openQuote(t.getAttribute("data-quote") === "home" ? "home" : "roof"); }
+      if (t) {
+        e.preventDefault();
+        var mode = t.getAttribute("data-quote") === "home" ? "home" : "roof";
+        var project = t.getAttribute("data-quote-project") || "";
+        var only = t.getAttribute("data-quote-only");
+        openQuote(mode, project ? { project: project } : null, only ? only.split(",") : null);
+      }
     });
     initBeforeAfter();
     initFaq();
