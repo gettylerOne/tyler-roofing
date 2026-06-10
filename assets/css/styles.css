@@ -187,8 +187,10 @@ button{font:inherit;color:inherit}
   .mobile-toggle{display:flex}
 }
 @media(max-width:480px){
-  .book-label-full{display:none}
-  .book-label-short{display:inline}
+  /* Full "Book Free Inspection" label even on small phones — shrink chrome to fit */
+  .topnav .logo img{height:38px}
+  .nav-actions .btn{padding:9px 11px;font-size:11.5px;white-space:nowrap}
+  .nav-actions .btn svg{display:none}
 }
 
 /* =========================================================================
@@ -302,7 +304,27 @@ button{font:inherit;color:inherit}
   .hero-panel{max-width:560px}
   .hero h1{white-space:normal}
 }
-@media (max-width:560px){.hero-form .hf-row{grid-template-columns:1fr}}
+/* Mobile: keep the form fields 2-up (Name+Phone / ZIP+need) so the form stays
+   short — just tighten the spacing instead of stacking to one column. */
+@media (max-width:560px){
+  .hero-form{padding:16px;gap:11px}
+  .hero-form .hf-row{gap:10px}
+  .hero-form .field label{font-size:11px}
+  .hero-form .field input,.hero-form .field select{padding:11px 10px}
+  .hf-foot{padding-top:10px}
+}
+
+/* Mobile hero: photo-first layout so the slideshow shows the WHOLE picture.
+   The photos are ~16:10 landscape; instead of cover-cropping them behind a
+   tall hero, they get their own full-width 16:10 band up top, with the
+   headline/copy/form on solid forest below. */
+@media (max-width:720px){
+  .hero{display:flex;flex-direction:column;min-height:0;background:var(--fg)}
+  .hero-bg{position:relative;inset:auto;width:100%;aspect-ratio:16/10}
+  /* no scrim needed — text no longer sits on the photo */
+  .hero-bg::after{display:none}
+  .hero h1{margin:0}
+}
 
 /* ── Hero drone badge ────────────────────────────────────────────────────── */
 /* =========================================================================
@@ -499,6 +521,19 @@ button{font:inherit;color:inherit}
   .problem-card.featured{grid-column:1 / span 2;grid-row:auto;min-height:300px}
 }
 @media(max-width:760px){.insp-grid{grid-template-columns:1fr;gap:36px}}
+@media(max-width:600px){
+  /* Free Inspection section, mobile: photo up top (no longer stranded at the
+     bottom), CTA pulled above the checklist so it's reachable sooner. */
+  .drone{padding:44px 0}
+  .insp-grid{display:flex;flex-direction:column;gap:22px}
+  .insp-detail{order:-1;width:100%}
+  .insp-photo{width:100%;aspect-ratio:16/10}
+  .insp-text{display:flex;flex-direction:column}
+  .drone-lede{margin-top:14px;font-size:15.5px}
+  .drone-stats{margin-top:22px}
+  .drone-actions{order:4;margin-top:24px}
+  .checklist{order:5;margin-top:24px}
+}
 @media(max-width:600px){
   .problem-grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .problem-card.featured{grid-column:1 / span 2;min-height:260px}
@@ -928,9 +963,19 @@ button{font:inherit;color:inherit}
   .trust-mini{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:560px){
-  .footer-grid{grid-template-columns:1fr}
+  /* Mobile footer: 2-up instead of one long stack — Services & Company sit
+     side by side, Reach-us items go 2-up underneath. */
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px 20px}
+  .footer-grid>.footer-brand{grid-column:1/-1}
+  .footer-grid>.footer-reach{grid-column:1/-1}
+  .footer-reach .reach-list{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+  .footer-brand p{margin-top:14px}
+  .footer-brand .btn{margin-top:16px}
+  .footer-follow{margin-top:20px}
+  .footer-col .col-title,.footer-reach .col-title{margin-bottom:12px}
+  .footer-legal{margin-top:24px}
   .trust-mini{grid-template-columns:repeat(2,1fr)}
-  .footer .container{padding:48px 20px 24px}
+  .footer .container{padding:44px 20px 24px}
 }
 
 /* =========================================================================
@@ -1708,7 +1753,7 @@ button{font:inherit;color:inherit}
   h1.h-display{font-size:clamp(40px,11vw,72px)}
   .hero h1{font-size:clamp(32px,8vw,72px);line-height:1.08}
   .hero{min-height:auto}
-  .hero-inner{padding-top:72px;padding-bottom:0}
+  .hero-inner{padding-top:18px;padding-bottom:0}
   .hero-lower{margin-top:20px;gap:22px}
   .hero-sub{font-size:16.5px;margin-top:14px}
   .hero-checks{margin-top:16px;gap:9px 18px}
@@ -1766,4 +1811,23 @@ button{font:inherit;color:inherit}
   .btn{padding:12px 16px;font-size:13px;gap:8px}
   .trust-grid{grid-template-columns:repeat(2,1fr)}
   .rev-marquee-track{animation-duration:80s}
+}
+
+/* ── Mobile review marquee: two compact rows in (roughly) the height one row
+   used to take. Grid auto-flows column-by-column, so the duplicated review
+   list still splits into two identical halves and the -50% loop stays
+   seamless. Column gap must stay 20px to match the keyframe's -10px offset. */
+@media(max-width:720px){
+  .rev-marquee{padding:26px 0}
+  .rev-marquee::before,.rev-marquee::after{width:44px}
+  .rev-marquee-track{
+    display:grid;grid-template-rows:1fr 1fr;grid-auto-flow:column;
+    gap:12px 20px;
+  }
+  .mrev-card{width:248px;min-height:0;padding:13px 15px;gap:8px;border-radius:12px}
+  .mrev-avatar{width:32px;height:32px;font-size:13px}
+  .mrev-name{font-size:13px}
+  .mrev-body{font-size:12px;line-height:1.45;-webkit-line-clamp:2}
+  .mrev-foot{display:none}
+  .mrev-thumb{display:none}
 }

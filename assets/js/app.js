@@ -123,9 +123,9 @@
               "</div>" +
             "</div>" +
             footerCol("Services", [
-              ["Roof replacement & repairs", "services.html#roof-replace"],
-              ["Storm & insurance", "storm.html"],
-              ["All materials", "materials.html"],
+              ["Roofing", "services.html#roof-replace"],
+              ["Storms", "services.html#storm"],
+              ["Home solutions", "services.html#home"],
               ["Service areas", "areas.html"],
             ]) +
             footerCol("Company", [
@@ -1052,7 +1052,7 @@
     // Mini lead forms feed the full booking modal, carrying over anything
     // already typed (name, phone, need → flow/project, ZIP → notes).
     // "Home solutions" opens the home-services flow; the rest use the roof flow.
-    var NEED_TO_PROJECT = { "Storm Damage": "storm", "Other": "other" };
+    var NEED_TO_PROJECT = { "Storms": "storm", "Other": "other" };
     // "Roofing" trims step 1 to roofing-only choices (no storm/gutter noise).
     var ROOFING_ONLY = ["replace", "repair", "inspect", "other"];
     $all(".lead-form").forEach(function (form) {
