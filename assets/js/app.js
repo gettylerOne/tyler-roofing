@@ -136,6 +136,7 @@
               ["Financing", "financing.html"],
               ["Contact", "contact.html"],
             ]) +
+            '<button class="btn btn-primary footer-book" data-quote>Book Now</button>' +
             '<div class="footer-reach">' +
               '<div class="col-title">Reach us</div>' +
               '<div class="reach-list">' +
@@ -153,11 +154,17 @@
             "</div>" +
           "</div>" +
           '<div class="footer-legal">' +
-            '<div class="lf">© ' + new Date().getFullYear() +
-              " Tyler Roofing & Home Solutions · Licensed & insured · AL</div>" +
-            '<div class="rt">' +
-              '<span class="lf">AL License # pending</span>' +
-              '<a class="lf" href="' + ROOT + 'privacy.html">Privacy</a>' +
+            '<div class="footer-legal-left">' +
+              '<div class="footer-legal-logo">' + logoHtml() + "</div>" +
+              '<div class="socials foot-soc">' + socials + "</div>" +
+            "</div>" +
+            '<div class="footer-legal-text">' +
+              '<span class="lf">© ' + new Date().getFullYear() +
+                " Tyler Roofing & Home Solutions · Licensed & insured · AL</span>" +
+              '<span class="rt">' +
+                '<span class="lf foot-lic">AL License # pending</span>' +
+                '<a class="lf" href="' + ROOT + 'privacy.html">Privacy</a>' +
+              "</span>" +
             "</div>" +
           "</div>" +
         "</div>" +
@@ -604,6 +611,23 @@
         document.body.appendChild(overlay);
       });
     });
+  }
+
+  /* Deep-link: reviews.html?photo=<file> scrolls to that work card and opens it
+     (used by the homepage hero long-press). */
+  function initWorkPhotoDeepLink() {
+    var photo = new URLSearchParams(location.search).get("photo");
+    if (!photo) return;
+    var match = null;
+    $all("[data-lightbox]").forEach(function (c) {
+      if (!match && (c.dataset.lightbox || "").split("/").pop() === photo) match = c;
+    });
+    if (!match) return;
+    setTimeout(function () {
+      var top = match.getBoundingClientRect().top + window.pageYOffset - 90;
+      window.scrollTo({ top: top, behavior: "smooth" });
+      setTimeout(function () { match.click(); }, 480);
+    }, 200);
   }
 
   /* =========================================================================
@@ -1238,19 +1262,20 @@
     var mq = window.matchMedia("(max-width:720px)");
     var timer = null, idx = 0;
 
+    function tick() {
+      imgs[idx].classList.remove("is-active");
+      idx = (idx + 1) % imgs.length;
+      imgs[idx].classList.add("is-active");
+    }
+    function run() { if (!timer) { bg.classList.add("is-cycling"); timer = setInterval(tick, 4500); } }
+    function pause() { if (timer) { clearInterval(timer); timer = null; } }
     function start() {
-      if (timer) return;
       idx = 0;
       imgs.forEach(function (im, i) { im.classList.toggle("is-active", i === 0); });
-      bg.classList.add("is-cycling");
-      timer = setInterval(function () {
-        imgs[idx].classList.remove("is-active");
-        idx = (idx + 1) % imgs.length;
-        imgs[idx].classList.add("is-active");
-      }, 4500);
+      run();
     }
     function stop() {
-      if (timer) { clearInterval(timer); timer = null; }
+      pause();
       bg.classList.remove("is-cycling");
       imgs.forEach(function (im) { im.classList.remove("is-active"); });
     }
@@ -1259,6 +1284,44 @@
     sync();
     if (mq.addEventListener) mq.addEventListener("change", sync);
     else if (mq.addListener) mq.addListener(sync);
+
+    /* Mobile: press-and-hold the current photo to jump to it on the reviews page. */
+    var pressTimer = null, sx = 0, sy = 0, pop = null;
+    function curBase() {
+      var cur = bg.querySelector("img.is-active") || imgs[idx] || imgs[0];
+      return (cur.getAttribute("src") || "").split("/").pop().split("?")[0];
+    }
+    function openPop() {
+      if (pop || !mq.matches) return;
+      pause();
+      pop = el(
+        '<div class="hero-tap-overlay">' +
+          '<div class="hero-tap-pop">' +
+            '<div class="htp-eyebrow mono">Recent work</div>' +
+            '<div class="htp-title">See this job on our reviews page?</div>' +
+            '<a class="btn btn-accent htp-go" href="reviews.html?photo=' + encodeURIComponent(curBase()) + '#work">View this project \u2192</a>' +
+            '<button class="htp-dismiss" type="button">Not now</button>' +
+          "</div>" +
+        "</div>"
+      );
+      bg.appendChild(pop);
+      function close() { if (pop) { pop.remove(); pop = null; } if (mq.matches) run(); }
+      pop.addEventListener("click", function (e) { if (e.target === pop) close(); });
+      pop.querySelector(".htp-dismiss").addEventListener("click", close);
+    }
+    bg.addEventListener("touchstart", function (e) {
+      if (!mq.matches || pop) return;
+      var t = e.touches[0]; sx = t.clientX; sy = t.clientY;
+      pressTimer = setTimeout(openPop, 480);
+    }, { passive: true });
+    bg.addEventListener("touchmove", function (e) {
+      var t = e.touches[0];
+      if (Math.abs(t.clientX - sx) > 10 || Math.abs(t.clientY - sy) > 10) { clearTimeout(pressTimer); }
+    }, { passive: true });
+    ["touchend", "touchcancel"].forEach(function (ev) {
+      bg.addEventListener(ev, function () { clearTimeout(pressTimer); });
+    });
+    bg.addEventListener("contextmenu", function (e) { if (mq.matches) e.preventDefault(); });
   }
 
   /* =========================================================================
@@ -1280,6 +1343,7 @@
     initBeforeAfter();
     initFaq();
     initLightbox();
+    initWorkPhotoDeepLink();
     initMarquee();
     initMaps();
     initAlabamaMap();

@@ -20,6 +20,7 @@
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --display-weight:500;
   --display-letter:-0.01em;
+  --phone-ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 3.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4.5 5.5a2 2 0 0 1 2-2z'/%3E%3C/svg%3E");
 }
 
 *{box-sizing:border-box}
@@ -209,6 +210,18 @@ button{font:inherit;color:inherit}
 .hero-bg img + img{opacity:0}
 .hero-bg.is-cycling img{opacity:0;transition:opacity 1.2s ease}
 .hero-bg.is-cycling img.is-active{opacity:1}
+.hero-bg img{-webkit-touch-callout:none}
+/* Long-press "see this project" popup over the mobile hero slideshow. */
+.hero-tap-overlay{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(8,18,12,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  animation:htp-fade .15s ease}
+@keyframes htp-fade{from{opacity:0}to{opacity:1}}
+.hero-tap-pop{width:100%;max-width:300px;background:var(--bg);border-radius:14px;padding:18px 18px 14px;
+  box-shadow:0 18px 44px rgba(8,18,12,.42);display:flex;flex-direction:column;gap:9px;text-align:center}
+.hero-tap-pop .htp-eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero-tap-pop .htp-title{font-family:var(--display);font-size:18px;line-height:1.2;color:var(--fg)}
+.hero-tap-pop .htp-go{width:100%;justify-content:center;margin-top:4px}
+.hero-tap-pop .htp-dismiss{background:transparent;border:0;color:var(--muted);font-size:12.5px;padding:5px;cursor:pointer}
 .hero-bg::after{
   content:"";position:absolute;inset:0;
   background:
@@ -911,6 +924,7 @@ button{font:inherit;color:inherit}
   font-size:clamp(48px,7vw,96px);margin:0;color:var(--fg);max-width:1100px;
 }
 .page-hero h1 i{color:var(--accent);font-style:normal}
+.svc-htitle-short{display:none}
 .page-hero .body{margin-top:28px;font-size:18px;line-height:1.55;
   color:var(--muted);max-width:640px}
 
@@ -974,6 +988,10 @@ button{font:inherit;color:inherit}
 .footer-legal .lf{font-family:var(--mono);font-size:11px;letter-spacing:.03em;
   color:var(--muted)}
 .footer-legal .rt{display:flex;gap:18px;flex-wrap:wrap}
+.footer-legal .foot-soc{display:none}
+.footer-legal-left{display:none}
+.footer-book{display:none}
+.footer-legal-text{display:flex;justify-content:space-between;align-items:center;width:100%;gap:16px;flex-wrap:wrap}
 
 @media(max-width:980px){
   .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
@@ -994,6 +1012,36 @@ button{font:inherit;color:inherit}
   .footer-legal{margin-top:24px}
   .trust-mini{grid-template-columns:repeat(2,1fr)}
   .footer .container{padding:44px 20px 24px}
+}
+/* Mobile footer — "Option A": light panel that flows out of the closing-CTA
+   form. Logo + Book button dropped (the closing CTA already covers that);
+   order is links → contact → socials. Desktop untouched. */
+@media(max-width:720px){
+  .footer .container{padding:32px 22px 24px}
+  .footer-brand .logo,.footer-brand p,.footer-brand .btn{display:none}
+  .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .footer-grid>.footer-brand{display:none}
+  .footer-grid>.footer-col{order:1}
+  .footer-book{display:flex;order:2;grid-column:1/-1;width:100%;justify-content:center;margin-top:4px}
+  .footer-grid>.footer-reach{order:3;grid-column:1/-1;padding-top:20px;border-top:1px solid var(--line)}
+  /* contact: drop the labels — phone pill, hours, address, email in one clean column */
+  .footer-reach .col-title{display:none}
+  .footer-reach .reach-k{display:none}
+  .footer-reach .reach-list{display:flex;flex-direction:column;gap:12px}
+  .footer-reach .reach-list>div:nth-child(3){order:1}
+  .footer-reach .reach-list>div:nth-child(4){order:2}
+  .footer-reach .reach-list>div:nth-child(2){order:3}
+  .footer-reach .reach-list>div:nth-child(3) .reach-sub{display:none}
+  .footer .reach-phone{width:100%;justify-content:center;margin-bottom:6px}
+  /* bottom row: real social icons (left) + legal (right) */
+  .footer-legal{margin-top:24px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:nowrap;border-top:1px solid var(--line);padding-top:20px}
+  .footer-legal-left{display:flex;flex-direction:column;gap:14px;align-items:flex-start;flex-shrink:0}
+  .footer-legal-logo{display:block}
+  .footer-legal-logo .logo img{height:38px;width:auto}
+  .footer-legal-left .foot-soc{display:flex}
+  .footer-legal-text{flex-direction:column;align-items:flex-end;text-align:right;width:auto;flex:1;gap:6px}
+  .footer-legal-text .rt{flex-direction:column;align-items:flex-end;gap:4px}
+  .footer-legal-text .foot-lic{display:none}
 }
 
 /* =========================================================================
@@ -1822,7 +1870,7 @@ button{font:inherit;color:inherit}
      leaving big dead bands below headings and above the next block. ── */
   .solutions{padding:40px 0}
   .solutions-top{gap:18px}
-  .solutions-top-cta{margin-top:0}
+  .solutions-top-cta{margin-top:0;width:100%;justify-content:center}
   .solutions-bottom-cta{margin-top:24px}
   .closing-cta{padding:56px 0}
   .closing-cta h2 i{white-space:nowrap}
@@ -1843,6 +1891,40 @@ button{font:inherit;color:inherit}
     border:1.5px solid color-mix(in oklab,var(--accent) 45%,var(--line));color:var(--accent);
     border-radius:999px;padding:10px 18px;font-size:13px;letter-spacing:.04em;font-weight:600}
   .cov-foot-num .cf-ico{display:block;width:15px;height:15px;flex:0 0 auto}
+  /* ── Every phone button gets the same outlined pill + phone glyph (mobile).
+     Any tel: button — accent outline on light sections, light outline on dark
+     bands. The footer + mobile-menu numbers become matching pills too. ── */
+  a.btn[href^="tel:"]{background:transparent;color:var(--accent);gap:9px;
+    border:1.5px solid color-mix(in oklab,var(--accent) 45%,var(--line))}
+  .storm-band a.btn[href^="tel:"]{color:var(--bg);
+    border-color:color-mix(in oklab,var(--bg) 40%,transparent)}
+  .reach-phone,.mobile-sheet .sheet-phone{display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--body);font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--accent);
+    border:1.5px solid color-mix(in oklab,var(--accent) 45%,var(--line));border-radius:999px;
+    padding:9px 16px;width:max-content}
+  a.btn[href^="tel:"]::before,.reach-phone::before,.mobile-sheet .sheet-phone::before{
+    content:"";width:16px;height:16px;flex:0 0 auto;background:currentColor;
+    -webkit-mask:var(--phone-ico) center/contain no-repeat;mask:var(--phone-ico) center/contain no-repeat}
+  /* Services-page hero, mobile: just "Our Services" — drop the lede, full-width
+     CTA, and pull the first service up close to the heading. */
+  .page-hero .svc-htitle-full{display:none}
+  .page-hero .svc-htitle-short{display:inline}
+  .svc-hero-lede{display:none}
+  .svc-hero-cta{width:100%;justify-content:center}
+  .svc-hero h1{text-align:center}
+  .page-hero{padding-bottom:18px}
+  /* Services page: each job is a full-bleed band, alternating beige / white
+     so the colour flip marks where one job ends and the next begins.
+     Home Solutions leads on mobile; band colours are set per-id to keep the
+     alternation clean in that reordered sequence. */
+  .svc-grid{display:flex;flex-direction:column;gap:0}
+  .svc-article{display:flex;flex-direction:column;gap:18px;grid-row:auto;
+    margin:0 -22px;padding:38px 22px}
+  #home{order:-1;background:var(--bg)}
+  #roof-replace{background:var(--surface)}
+  #storm{background:var(--bg)}
+  #tree-removal{background:var(--surface)}
+  .svc-article .btn{align-self:flex-start}
 }
 @media(max-width:560px){
   .logo img{height:50px}
