@@ -1226,6 +1226,40 @@
   function escAttr(s) { return escHtml(s).replace(/"/g, "&quot;"); }
 
   /* =========================================================================
+     HERO SLIDESHOW (mobile only — auto cross-fade)
+     ========================================================================= */
+  function initHeroSlideshow() {
+    var bg = $(".hero-bg");
+    if (!bg) return;
+    var imgs = $all("img", bg);
+    if (imgs.length < 2) return;
+    var mq = window.matchMedia("(max-width:720px)");
+    var timer = null, idx = 0;
+
+    function start() {
+      if (timer) return;
+      idx = 0;
+      imgs.forEach(function (im, i) { im.classList.toggle("is-active", i === 0); });
+      bg.classList.add("is-cycling");
+      timer = setInterval(function () {
+        imgs[idx].classList.remove("is-active");
+        idx = (idx + 1) % imgs.length;
+        imgs[idx].classList.add("is-active");
+      }, 4500);
+    }
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+      bg.classList.remove("is-cycling");
+      imgs.forEach(function (im) { im.classList.remove("is-active"); });
+    }
+    function sync() { mq.matches ? start() : stop(); }
+
+    sync();
+    if (mq.addEventListener) mq.addEventListener("change", sync);
+    else if (mq.addListener) mq.addListener(sync);
+  }
+
+  /* =========================================================================
      BOOT
      ========================================================================= */
   function init() {
@@ -1255,6 +1289,7 @@
     initReviewCarousel();
     initStars();
     initReviewPopup();
+    initHeroSlideshow();
     if ($(".area-detail")) updateAreaDetail("birmingham");
   }
 

@@ -203,7 +203,10 @@ button{font:inherit;color:inherit}
   border-bottom:1px solid var(--line);
 }
 .hero-bg{position:absolute;inset:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover}
+.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-bg img + img{opacity:0}
+.hero-bg.is-cycling img{opacity:0;transition:opacity 1.2s ease}
+.hero-bg.is-cycling img.is-active{opacity:1}
 .hero-bg::after{
   content:"";position:absolute;inset:0;
   background:
@@ -497,8 +500,14 @@ button{font:inherit;color:inherit}
 }
 @media(max-width:760px){.insp-grid{grid-template-columns:1fr;gap:36px}}
 @media(max-width:600px){
-  .problem-grid{grid-template-columns:1fr}
-  .problem-card.featured{grid-column:1;min-height:280px}
+  .problem-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .problem-card.featured{grid-column:1 / span 2;min-height:260px}
+  .problem-card:not(.featured){padding:18px 15px 15px}
+  .problem-card:not(.featured) .pc-icon{margin-bottom:10px}
+  .problem-card:not(.featured) .pc-icon svg{width:24px;height:24px}
+  .problem-card:not(.featured) .pc-title{font-size:16.5px;line-height:1.15}
+  .problem-card:not(.featured) .pc-sub{font-size:12.5px;margin-top:6px;line-height:1.5}
+  .problem-card:not(.featured) .pc-link{padding-top:12px;font-size:12px}
 }
 
 /* =========================================================================
@@ -1691,12 +1700,27 @@ button{font:inherit;color:inherit}
   .legal-aside{position:static}
 }
 @media(max-width:720px){
-  .container{padding:0 20px}
+  .container{padding:0 22px}
   .solutions-head h2 i{white-space:normal}
   .pad-y-xl{padding:60px 0}
   .pad-y-lg{padding:48px 0}
   .pad-y-md{padding:36px 0}
-  h1.h-display,.hero h1{font-size:clamp(40px,11vw,72px)}
+  h1.h-display{font-size:clamp(40px,11vw,72px)}
+  .hero h1{font-size:clamp(32px,8vw,72px);line-height:1.08}
+  .hero{min-height:auto}
+  .hero-inner{padding-top:72px;padding-bottom:0}
+  .hero-lower{margin-top:20px;gap:22px}
+  .hero-sub{font-size:16.5px;margin-top:14px}
+  .hero-checks{margin-top:16px;gap:9px 18px}
+  .hero-checks li{font-size:15px}
+  .hero-trust{margin-top:12px}
+  /* Form drops out of the photo into its own solid band below the hero */
+  .hero-panel{
+    max-width:none;
+    margin:0 -22px 0;
+    padding:26px 22px 40px;
+    background:var(--bg);
+  }
   .svc-list{grid-template-columns:1fr}
   .svc-row,.svc-row:not(:nth-child(3n)){border-right:0}
   .svc-row:not(:nth-child(3n+1)){padding-left:0}
