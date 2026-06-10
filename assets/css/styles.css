@@ -1781,8 +1781,9 @@ button{font:inherit;color:inherit}
   .trust-grid{grid-template-columns:repeat(3,1fr)}
   .faq-grid{grid-template-columns:1fr;gap:32px}
   .faq-aside{position:static}
-  .faq-cats{flex-direction:row;flex-wrap:wrap;gap:6px}
-  .faq-cats button{flex:0 0 auto}
+  .faq-cats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .faq-cats button{display:flex;justify-content:space-between;align-items:center;border-color:var(--line)}
+  .faq-cats button:first-child{grid-column:1 / -1;justify-content:center;gap:8px}
   .home-faq-grid{grid-template-columns:1fr;gap:48px}
   .contact-grid{grid-template-columns:1fr;gap:48px}
   .fin-grid{grid-template-columns:1fr;gap:48px}
@@ -1822,15 +1823,16 @@ button{font:inherit;color:inherit}
   .hero h1{font-size:clamp(32px,8vw,72px);line-height:1.08}
   .hero{min-height:auto}
   .hero-inner{padding-top:18px;padding-bottom:0}
-  .hero-lower{margin-top:6px;gap:22px}
-  .hero-sub{font-size:15.5px;margin-top:14px}
+  .hero-lower{margin-top:2px;gap:8px}
+  .hero-sub{font-size:14px;margin-top:0}
   /* Shorter subtext on mobile only — full line reads heavy between the
      headline and the check row. */
   .hero-sub-full{display:none}
   .hero-sub-short{display:inline}
-  .hero-checks{margin-top:16px;gap:9px 18px}
-  .hero-checks li{font-size:15px}
-  .hero-trust{margin-top:12px}
+  .hero-checks{margin-top:16px;gap:8px 14px;flex-wrap:nowrap;justify-content:center}
+  .hero-checks li{font-size:13px}
+  .hero-checks li svg{width:16px;height:16px}
+  .hero-trust{margin-top:5px}
   /* Form drops out of the photo into its own solid band below the hero */
   .hero-panel{
     max-width:none;
@@ -1911,7 +1913,7 @@ button{font:inherit;color:inherit}
   .page-hero .svc-htitle-short{display:inline}
   .svc-hero-lede{display:none}
   .svc-hero-cta{width:100%;justify-content:center}
-  .svc-hero h1{text-align:center}
+  .svc-hero h1{text-align:center;white-space:nowrap;font-size:clamp(24px,9.5vw,48px)}
   .page-hero{padding-bottom:18px}
   /* Services page: each job is a full-bleed band, alternating beige / white
      so the colour flip marks where one job ends and the next begins.
@@ -1920,11 +1922,13 @@ button{font:inherit;color:inherit}
   .svc-grid{display:flex;flex-direction:column;gap:0}
   .svc-article{display:flex;flex-direction:column;gap:18px;grid-row:auto;
     margin:0 -22px;padding:38px 22px}
-  #home{order:-1;background:var(--bg)}
+  #home{order:-1;background:var(--surface);border-bottom:1px solid var(--line)}
   #roof-replace{background:var(--surface)}
   #storm{background:var(--bg)}
   #tree-removal{background:var(--surface)}
   .svc-article .btn{align-self:flex-start}
+  /* Storm page: tighten the dead gap between the storm band and the steps. */
+  .storm-steps{margin-top:16px}
 }
 @media(max-width:560px){
   .logo img{height:50px}
