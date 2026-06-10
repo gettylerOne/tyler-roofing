@@ -645,15 +645,17 @@
     var cards = window.MARQUEE_REVIEWS.concat(window.MARQUEE_REVIEWS).map(card).join("");
     host.innerHTML =
       '<div class="rev-marquee-head">' +
-        '<div class="left">' +
-          '<span style="width:28px;height:1px;background:var(--accent)"></span>' +
-          '<div class="mono" style="font-size:11px;letter-spacing:.03em;color:var(--fg);opacity:.85">What neighbors are saying</div>' +
-          '<div style="display:flex;align-items:center;gap:6px">' + stars +
-            '<span class="mono" style="font-size:11px;color:var(--accent);letter-spacing:.06em;font-weight:600">5.0 · Google</span></div>' +
+        '<h3 class="rev-head-title">What neighbors are saying</h3>' +
+        '<div class="rev-head-row">' +
+          '<div class="rev-head-rate">' + stars +
+            '<span class="rev-head-score">5.0 · Google</span></div>' +
+          '<a class="read-all" href="' + ROOT + 'reviews.html">Read all reviews →</a>' +
         "</div>" +
-        '<a class="read-all" href="' + ROOT + 'reviews.html">Read all reviews →</a>' +
       "</div>" +
-      '<div class="rev-marquee-track">' + cards + "</div>";
+      '<div class="rev-marquee-rows">' +
+        '<div class="rev-marquee-track rev-row-a">' + cards + "</div>" +
+        '<div class="rev-marquee-track rev-row-b">' + cards + "</div>" +
+      "</div>";
   }
 
   function star() {
