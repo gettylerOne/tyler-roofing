@@ -1259,7 +1259,7 @@
     if (!bg) return;
     var imgs = $all("img", bg);
     if (imgs.length < 2) return;
-    var mq = window.matchMedia("(max-width:720px)");
+    var mq = window.matchMedia("(min-width:0px)");
     var timer = null, idx = 0;
 
     function tick() {
@@ -1267,7 +1267,7 @@
       idx = (idx + 1) % imgs.length;
       imgs[idx].classList.add("is-active");
     }
-    function run() { if (!timer) { bg.classList.add("is-cycling"); timer = setInterval(tick, 4500); } }
+    function run() { if (!timer) { bg.classList.add("is-cycling"); timer = setInterval(tick, 5400); } }
     function pause() { if (timer) { clearInterval(timer); timer = null; } }
     function start() {
       idx = 0;

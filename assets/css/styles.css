@@ -226,17 +226,17 @@ button{font:inherit;color:inherit}
   content:"";position:absolute;inset:0;
   background:
     linear-gradient(180deg,
-      rgba(18,15,11,.62) 0%,
-      rgba(18,15,11,.34) 36%,
+      rgba(18,15,11,.22) 0%,
+      rgba(18,15,11,.10) 36%,
       rgba(18,15,11,0) 62%),
     linear-gradient(100deg,
-      rgba(18,15,11,.76) 0%,
-      rgba(18,15,11,.62) 34%,
-      rgba(18,15,11,.36) 58%,
-      rgba(18,15,11,.10) 86%),
+      rgba(18,15,11,.28) 0%,
+      rgba(18,15,11,.20) 34%,
+      rgba(18,15,11,.10) 58%,
+      rgba(18,15,11,.04) 86%),
     linear-gradient(180deg,
       rgba(18,15,11,0) 60%,
-      rgba(18,15,11,.26) 100%);
+      rgba(18,15,11,.10) 100%);
 }
 .hero-inner{
   position:relative;padding-top:80px;padding-bottom:80px;text-align:left;
@@ -311,6 +311,15 @@ button{font:inherit;color:inherit}
 .hero-form-sent h3{font-size:24px;margin:0;color:var(--fg)}
 .hero-form-sent p{color:var(--muted);font-size:14.5px;line-height:1.5;margin:0}
 .hero-form-sent a{color:var(--accent);font-weight:600}
+/* Desktop hero (slideshow now runs here too): dark fill behind the photos,
+   lighter scrim, stronger text shadows for legibility, and the 6 check items
+   laid out in a 3-column grid (3 on top, 3 below). */
+@media (min-width:721px){
+  .hero-bg{background:#0b1208}
+  .hero h1{text-shadow:0 2px 8px rgba(8,18,12,.7),0 6px 32px rgba(8,18,12,.6)}
+  .hero-sub{text-shadow:0 1px 6px rgba(8,18,12,.7),0 4px 20px rgba(8,18,12,.6)}
+  .hero-checks{display:grid;grid-template-columns:repeat(3,max-content);gap:10px 22px;justify-content:start}
+}
 @media (max-width:1080px){
   .hero{min-height:70vh}
   .hero-inner{padding-top:100px}
@@ -413,7 +422,12 @@ button{font:inherit;color:inherit}
 .drone-cap .role{font-family:var(--mono);font-size:10px;letter-spacing:.03em;
   color:var(--accent);margin-bottom:2px}
 .drone-cap .name{font-size:14px;font-weight:600;color:var(--fg)}
-.drone h2{font-size:clamp(36px,4.5vw,60px);margin:0;color:var(--fg);line-height:1.05}
+/* "Free Inspection" on one line site-wide; closing-CTA book button reads
+   "Book Free Roof Inspection" on every page via a label override (desktop+mobile). */
+.ins-brk{display:none}
+.closing-cta-actions .btn-accent[data-quote]{font-size:0}
+.closing-cta-actions .btn-accent[data-quote]::before{content:"Book Free Roof Inspection \2192";font-size:14px;font-family:'Manrope',sans-serif;font-weight:600;letter-spacing:.01em}
+.drone h2{font-size:clamp(36px,4.5vw,60px);margin:0;color:var(--accent);line-height:1.05}
 .drone h2 i{font-style:normal;color:var(--accent);font-size:1.1em}
 .drone-lede{
   margin-top:22px;font-size:17px;line-height:1.6;
@@ -1836,6 +1850,9 @@ button{font:inherit;color:inherit}
   .hero-checks{margin-top:16px;gap:8px 14px;flex-wrap:nowrap;justify-content:center}
   .hero-checks li{font-size:13px}
   .hero-checks li svg{width:16px;height:16px}
+  /* Mobile keeps just the first 3 chips (Roofing · Home Solutions · Tree Work);
+     Exterior / Storm Damage / Gutters are desktop-only. */
+  .hero-checks li:nth-child(4),.hero-checks li:nth-child(5),.hero-checks li:nth-child(6){display:none}
   .hero-trust{margin-top:5px}
   /* Form drops out of the photo into its own solid band below the hero */
   .hero-panel{
@@ -1886,7 +1903,10 @@ button{font:inherit;color:inherit}
   .closing-cta-actions .btn{width:100%;justify-content:center}
   .closing-cta .call-line{width:100%;justify-content:center;gap:9px;padding:14px 16px;
     border:1.5px solid color-mix(in oklab,var(--bg) 38%,transparent);border-radius:999px}
-  .closing-cta .call-line .call-ico{display:block;width:16px;height:16px;flex:0 0 auto}
+  /* Phone glyph on every closing-CTA call button (the HTML .call-ico only exists
+     on the home page) — inject it via ::before site-wide, hide the lone SVG. */
+  .closing-cta .call-line .call-ico{display:none}
+  .closing-cta .call-line::before{content:"";display:block;flex-shrink:0;width:16px;height:16px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23014520' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 3.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4.5 5.5a2 2 0 0 1 2-2z'/%3E%3C/svg%3E") no-repeat center/contain}
   .closing-cta .call-line .lbl{display:none}
   .closing-cta .call-line .num{font-family:var(--body);font-weight:600;font-size:15px}
   /* "Free Inspection" on one line (desktop keeps the Free / Inspection stack). */
