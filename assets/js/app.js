@@ -22,6 +22,15 @@
 
   var ARROW = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+  /* Favicon — inject once if not already present. */
+  if (!document.querySelector('link[rel="icon"]')) {
+    var favicon = document.createElement("link");
+    favicon.rel = "icon";
+    favicon.type = "image/png";
+    favicon.href = ROOT + "assets/img/tyler-roof-icon.png";
+    document.head.appendChild(favicon);
+  }
+
   /* Logo lockup — original Tyler wordmark, recolored to the accent green. */
   function logoHtml() {
     return '<a class="logo" href="' + ROOT + 'index.html" aria-label="Tyler Roofing & Home Solutions home">' +
