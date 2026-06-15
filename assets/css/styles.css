@@ -505,6 +505,18 @@ button{font:inherit;color:inherit}
   position:absolute;inset:0;background:var(--pc-img) center/cover no-repeat;
   transform:scale(1.03);transition:transform .6s ease;
 }
+.problem-card.featured .pc-media-after{
+  background-image:var(--pc-img-2);
+  animation:pcCrossfade 10s ease-in-out infinite;
+}
+@keyframes pcCrossfade{
+  0%,42%{opacity:0}      /* before */
+  50%,92%{opacity:1}     /* after */
+  100%{opacity:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .problem-card.featured .pc-media-after{animation:none;opacity:0}
+}
 .problem-card.featured::after{
   content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(8,18,12,0) 0%,rgba(8,18,12,0) 48%,rgba(8,18,12,.45) 76%,rgba(8,18,12,.82) 100%);

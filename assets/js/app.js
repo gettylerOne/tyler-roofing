@@ -237,7 +237,6 @@
     { id: "other", label: "Other / not listed" },
     { id: "none", label: "Not filing a claim" },
   ];
-  var QUOTE_CITIES = ["Hoover", "Pelham", "Helena", "Alabaster", "Birmingham"];
   var SLOTS = ["7:30 – 9:30a", "9:30 – 11:30a", "12:30 – 2:30p", "2:30 – 4:30p", "4:30 – 6:30p"];
 
   function openQuote(mode, prefill, only) {
@@ -253,7 +252,7 @@
     var TOTAL_STEPS = FLOW.length;
     var step = 0;
     var data = { project: "", property: "", urgency: "", carrier: "", claim: "",
-                 city: "", address: "", name: "", email: "", phone: "",
+                 address: "", name: "", email: "", phone: "",
                  date: null, slot: "", notes: "" };
     if (prefill) {
       Object.keys(prefill).forEach(function (k) {
@@ -353,13 +352,6 @@
       }
       if (key === "place") {
         return '<div class="quote-steps">' +
-          '<div class="field-group"><div class="fg-label">Which city?</div>' +
-            '<div class="choice-grid c4" data-key="city" style="grid-template-columns:repeat(5,1fr)">' +
-            QUOTE_CITIES.map(function (c) {
-              return '<button type="button" class="slot' + (data.city === c ? " active" : "") +
-                '" data-val="' + c + '" style="text-align:center">' + c + "</button>";
-            }).join("") + "</div>" +
-            (errors.city ? '<div class="fg-err">' + errors.city + "</div>" : "") + "</div>" +
           '<div class="field"><label>Address or cross streets</label>' +
             '<input type="text" data-field="address" value="' + escAttr(data.address) +
             '" placeholder="e.g. 1234 Riverchase Pkwy or Helena/Hwy 261">' +
@@ -401,7 +393,6 @@
         '<div class="confirm-box">' +
           row("Project", proj) +
           (isHome ? "" : row("Insurance", carrierLbl + (data.claim ? " · Claim #" + data.claim : ""))) +
-          row("Property", data.city ? data.city + ", AL" : "") +
           row("Address", data.address) +
           row("Visit", dateStr + " · " + data.slot) +
           row("Contact", data.name + " · " + data.phone) +
@@ -488,7 +479,6 @@
         property: data.property,
         urgency: data.urgency,
         insurance: isHome ? "" : (carrierLbl + (data.claim ? " · Claim #" + data.claim : "")),
-        city: data.city ? data.city + ", AL" : "",
         address: data.address,
         visit: dateStr + (data.slot ? " · " + data.slot : ""),
         notes: data.notes,
@@ -508,7 +498,6 @@
       } else if (key === "insurance") {
         if (!data.carrier) errors.carrier = "Pick one";
       } else if (key === "place") {
-        if (!data.city) errors.city = "Pick a city";
         if (!data.address.trim()) errors.address = "Address or cross streets";
       } else if (key === "contact") {
         if (!data.name.trim()) errors.name = "Required";
