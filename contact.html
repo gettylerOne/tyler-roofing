@@ -29,7 +29,9 @@
       <div>
         <h2 class="h-display">Send a message</h2>
         <p class="lede">For a free inspection, you can also just <a href="#" data-quote>book a slot here</a>.</p>
-        <form id="contact-form" class="contact-form" novalidate>
+        <form id="contact-form" class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="contact">
+          <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
           <div class="field">
             <label for="cf-name">Your name</label>
             <input id="cf-name" name="name" type="text" placeholder="First &amp; last">

@@ -469,6 +469,33 @@
       });
     }
 
+    // Fired once, when the user clears the final step and lands on "confirm".
+    // The confirmation screen renders optimistically; if the POST fails the
+    // booking is lost silently (acceptable tradeoff for this front-end flow).
+    var submitted = false;
+    function submitBooking() {
+      if (submitted) return;
+      submitted = true;
+      var d = data.date ? new Date(data.date) : null;
+      var dateStr = d ? d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }) : "";
+      var projLabel = (PROJECT_TYPES.filter(function (p) { return p.id === data.project; })[0] || {}).label || data.project;
+      var carrierLbl = (INSURANCE_CARRIERS.filter(function (c) { return c.id === data.carrier; })[0] || {}).label || data.carrier;
+      postNetlify("booking", {
+        flow: isHome ? "Home solutions" : "Roofing",
+        project: projLabel,
+        property: data.property,
+        urgency: data.urgency,
+        insurance: isHome ? "" : (carrierLbl + (data.claim ? " · Claim #" + data.claim : "")),
+        city: data.city ? data.city + ", AL" : "",
+        address: data.address,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        visit: dateStr + (data.slot ? " · " + data.slot : ""),
+        notes: data.notes
+      }).catch(function () {});
+    }
+
     function advance() {
       errors = {};
       var key = FLOW[step];
@@ -489,7 +516,10 @@
         if (!data.date) errors.date = "Pick a date";
         if (!data.slot) errors.slot = "Pick a window";
       }
-      if (Object.keys(errors).length === 0) { step++; errors = {}; }
+      if (Object.keys(errors).length === 0) {
+        step++; errors = {};
+        if (FLOW[step] === "confirm") submitBooking();
+      }
       render();
     }
 
@@ -1106,6 +1136,22 @@
     });
   }
 
+  // Submit a plain object to Netlify Forms via AJAX. Posts url-encoded to "/"
+  // (absolute, so it works from subpages too). The form must be registered with
+  // Netlify via static markup it can detect at deploy time.
+  function postNetlify(formName, fields) {
+    var body = { "form-name": formName };
+    Object.keys(fields).forEach(function (k) { body[k] = fields[k]; });
+    var enc = Object.keys(body).map(function (k) {
+      return encodeURIComponent(k) + "=" + encodeURIComponent(body[k] == null ? "" : body[k]);
+    }).join("&");
+    return fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: enc
+    });
+  }
+
   function initContactForm() {
     var form = $("#contact-form");
     if (!form) return;
@@ -1124,15 +1170,30 @@
         field.appendChild(el('<div class="err">' + errs[k] + "</div>"));
       });
       if (Object.keys(errs).length) return;
-      var wrap = form.parentNode;
-      form.remove();
-      wrap.appendChild(el(
-        '<div class="form-sent">' +
-          '<div class="lbl">✓ Message sent</div>' +
-          '<h3 class="h-display">We\'ll be in touch within the day.</h3>' +
-          '<p>We\'ll text or call you at the number you provided. If it\'s urgent, go ahead and call <a href="' + TEL + '">' + PHONE + "</a>.</p>" +
-        "</div>"
-      ));
+
+      var btn = form.querySelector('button[type="submit"]');
+      var btnText = btn ? btn.textContent : "";
+      if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
+
+      postNetlify("contact", { name: f.name, email: f.email, phone: f.phone, msg: f.msg })
+        .then(function (r) { if (!r.ok) throw new Error("status " + r.status); })
+        .then(function () {
+          var wrap = form.parentNode;
+          form.remove();
+          wrap.appendChild(el(
+            '<div class="form-sent">' +
+              '<div class="lbl">✓ Message sent</div>' +
+              '<h3 class="h-display">We\'ll be in touch within the day.</h3>' +
+              '<p>We\'ll text or call you at the number you provided. If it\'s urgent, go ahead and call <a href="' + TEL + '">' + PHONE + "</a>.</p>" +
+            "</div>"
+          ));
+        })
+        .catch(function () {
+          if (btn) { btn.disabled = false; btn.textContent = btnText; }
+          if (!form.querySelector(".form-err")) {
+            form.appendChild(el('<div class="err form-err" style="margin-top:10px">Couldn\'t send that just now — please call <a href="' + TEL + '">' + PHONE + "</a> or email us directly.</div>"));
+          }
+        });
     });
   }
 

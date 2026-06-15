@@ -11,6 +11,18 @@
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body data-page="home">
+
+<!-- Netlify Forms detector for the JS-built booking modal. Hidden; never shown.
+     Netlify's deploy bot reads this markup to register the "booking" form so the
+     modal's AJAX POST (assets/js/app.js → submitBooking) is accepted site-wide. -->
+<form name="booking" netlify netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="booking">
+  <input name="bot-field"><input name="flow"><input name="project"><input name="property">
+  <input name="urgency"><input name="insurance"><input name="city"><input name="address">
+  <input name="name"><input name="email"><input name="phone"><input name="visit">
+  <textarea name="notes"></textarea>
+</form>
+
 <div id="site-header"></div>
 
 <main class="page">
