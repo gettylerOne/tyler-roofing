@@ -1107,7 +1107,7 @@
      ========================================================================= */
   function initLeadForms() {
     // Mini lead forms feed the full booking modal, carrying over anything
-    // already typed (name, phone, need → flow/project, ZIP → notes).
+    // already typed (name, phone, need → flow/project).
     // "Home solutions" opens the home-services flow; the rest use the roof flow.
     var NEED_TO_PROJECT = { "Storms": "storm", "Other": "other" };
     // "Roofing" trims step 1 to roofing-only choices (no storm/gutter noise).
@@ -1117,12 +1117,10 @@
         e.preventDefault();
         function fv(n) { var i = form.querySelector('[name="' + n + '"]'); return i ? i.value : ""; }
         var need = fv("need");
-        var zip = fv("zip").trim();
         openQuote(need === "Home solutions" ? "home" : "roof", {
           name: fv("name").trim(),
           phone: fv("phone").trim(),
-          project: NEED_TO_PROJECT[need] || "",
-          notes: zip ? "ZIP: " + zip : ""
+          project: NEED_TO_PROJECT[need] || ""
         }, need === "Roofing" ? ROOFING_ONLY : null);
       });
     });
