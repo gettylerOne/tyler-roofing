@@ -480,6 +480,8 @@
       var dateStr = d ? d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }) : "";
       var projLabel = (PROJECT_TYPES.filter(function (p) { return p.id === data.project; })[0] || {}).label || data.project;
       var carrierLbl = (INSURANCE_CARRIERS.filter(function (c) { return c.id === data.carrier; })[0] || {}).label || data.carrier;
+      // Field order matters: Netlify labels the dashboard row with the LAST
+      // field, so name goes last to make submissions read by customer name.
       postNetlify("booking", {
         flow: isHome ? "Home solutions" : "Roofing",
         project: projLabel,
@@ -488,11 +490,11 @@
         insurance: isHome ? "" : (carrierLbl + (data.claim ? " · Claim #" + data.claim : "")),
         city: data.city ? data.city + ", AL" : "",
         address: data.address,
-        name: data.name,
+        visit: dateStr + (data.slot ? " · " + data.slot : ""),
+        notes: data.notes,
         email: data.email,
         phone: data.phone,
-        visit: dateStr + (data.slot ? " · " + data.slot : ""),
-        notes: data.notes
+        name: data.name
       }).catch(function () {});
     }
 
