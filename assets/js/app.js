@@ -802,7 +802,7 @@
           '<button class="pop-close" aria-label="Close">&times;</button>' +
           '<div class="lbl">Worked with us before?</div>' +
           '<h3 class="h-display">Drop a quick review.</h3>' +
-          "<p>Tyler Roofing is small — every review is the kind of word-of-mouth that keeps us going.</p>" +
+          "<p>We're a small shop, and word of mouth is how most folks find us. A quick review means more than you'd think.</p>" +
           '<div class="actions">' +
             '<a class="btn btn-primary" style="font-size:13px;padding:10px 16px" href="https://www.google.com/search?q=Tyler+Roofing+and+Home+Solutions+Columbiana+AL" target="_blank" rel="noopener">Leave a Google review →</a>' +
             '<button class="later">Maybe later</button>' +
