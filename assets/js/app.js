@@ -376,7 +376,7 @@
           "</div>" +
           '<div class="privacy-note">' +
             '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="var(--accent)" stroke-width="1.4"/><path d="M10 6v4m0 3v.5" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round"/></svg>' +
-            '<div class="t">We don\'t share your info, don\'t sell leads, and don\'t send a single newsletter. You get a confirmation, a calendar invite, and a follow-up the day before.</div>' +
+            '<div class="t">We don\'t share your info, don\'t sell leads, and don\'t send a single newsletter. We\'ll only reach out about your project.</div>' +
           "</div></div>";
       }
       if (key === "time") return calendar();
@@ -388,8 +388,8 @@
       function row(k, v) { return v ? '<div class="confirm-row"><div class="k">' + k + '</div><div class="v">' + escHtml(v) + "</div></div>" : ""; }
       return '<div class="confirm">' +
         '<div class="check"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M8 17 L14 23 L25 11" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
-        '<h2 class="h-display">We\'ll see you ' + (dateStr.split(",")[0] || "soon") + ".</h2>" +
-        "<p>We'll text you a confirmation in the next few minutes, and call the morning of to nail down a tighter ETA.</p>" +
+        '<h2 class="h-display">Request received.</h2>' +
+        "<p>We'll call or text to confirm this time and get you on the schedule.</p>" +
         '<div class="confirm-box">' +
           row("Project", proj) +
           (isHome ? "" : row("Insurance", carrierLbl + (data.claim ? " · Claim #" + data.claim : ""))) +
@@ -406,14 +406,14 @@
     function render() {
       var TITLES = { project: "About the project", insurance: "Your insurance carrier",
         place: "Where's the property?", contact: "How do we reach you?",
-        time: "Pick a time", confirm: "You're on the calendar" };
+        time: "Pick a time", confirm: "Request received" };
       var key = FLOW[step];
       var lastForm = TOTAL_STEPS - 1;
       var isConfirm = key === "confirm";
       var pct = ((step + 1) / lastForm) * 100;
       modal.innerHTML =
         '<div class="modal-head"><div>' +
-          '<div class="step-lbl">' + (!isConfirm ? "Step " + (step + 1) + " of " + lastForm : "Booked") + "</div>" +
+          '<div class="step-lbl">' + (!isConfirm ? "Step " + (step + 1) + " of " + lastForm : "Request sent") + "</div>" +
           '<div class="step-title h-display">' + TITLES[key] + "</div></div>" +
           '<button class="modal-close" data-close aria-label="Close">&times;</button></div>' +
         (!isConfirm ? '<div class="modal-progress"><div class="bar" style="width:' + pct + '%"></div></div>' : "") +
@@ -422,7 +422,7 @@
           '<div class="modal-foot">' +
             "<div>" + (step > 0 ? '<button class="btn btn-ghost" data-back>← Back</button>' : "") + "</div>" +
             '<div class="right"><div class="free-note">Free · No obligation</div>' +
-            '<button class="btn btn-primary" data-next>' + (key === "time" ? "Confirm booking" : "Continue") + ARROW + "</button></div>" +
+            '<button class="btn btn-primary" data-next>' + (key === "time" ? "Request this time" : "Continue") + ARROW + "</button></div>" +
           "</div>" : "");
       wire();
     }
