@@ -252,7 +252,7 @@
     var TOTAL_STEPS = FLOW.length;
     var step = 0;
     var data = { project: "", property: "", urgency: "", carrier: "", claim: "",
-                 address: "", name: "", email: "", phone: "",
+                 address: "", city: "", state: "AL", zip: "", name: "", email: "", phone: "",
                  date: null, slot: "", notes: "" };
     if (prefill) {
       Object.keys(prefill).forEach(function (k) {
@@ -351,11 +351,23 @@
           "</div>";
       }
       if (key === "place") {
-        return '<div class="quote-steps">' +
-          '<div class="field"><label>Address or cross streets</label>' +
+        return '<div class="quote-fields">' +
+          '<div class="field"><label>Street address</label>' +
             '<input type="text" data-field="address" value="' + escAttr(data.address) +
-            '" placeholder="e.g. 1234 Riverchase Pkwy or Helena/Hwy 261">' +
+            '" placeholder="e.g. 1234 Riverchase Pkwy">' +
             (errors.address ? '<div class="err">' + errors.address + "</div>" : "") + "</div>" +
+          '<div class="field"><label>City</label>' +
+            '<input type="text" data-field="city" value="' + escAttr(data.city) +
+            '" placeholder="e.g. Hoover">' +
+            (errors.city ? '<div class="err">' + errors.city + "</div>" : "") + "</div>" +
+          '<div class="field-row">' +
+            '<div class="field"><label>State</label>' +
+              '<input type="text" data-field="state" value="' + escAttr(data.state) + '" placeholder="AL">' +
+              (errors.state ? '<div class="err">' + errors.state + "</div>" : "") + "</div>" +
+            '<div class="field"><label>ZIP</label>' +
+              '<input type="text" inputmode="numeric" data-field="zip" value="' + escAttr(data.zip) + '" placeholder="35051">' +
+              (errors.zip ? '<div class="err">' + errors.zip + "</div>" : "") + "</div>" +
+          "</div>" +
           '<div class="field"><label>Anything we should know? (optional)</label>' +
             '<textarea rows="3" data-field="notes" placeholder="' + (isHome ? "What you'd like done, gate code, big trees, parking, etc." : "Steep pitch, big trees, gate code, insurance claim number, etc.") + '">' +
             escHtml(data.notes) + "</textarea></div>" +
@@ -474,13 +486,16 @@
       // Netlify titles the dashboard row + notification email from the `subject`
       // field, so build a readable one led by the customer's name.
       postNetlify("booking", {
-        subject: (data.name || "New booking") + " — " + projLabel,
+        subject: [data.name || "New booking", data.city, projLabel].filter(Boolean).join(" — "),
         flow: isHome ? "Home solutions" : "Roofing",
         project: projLabel,
         property: data.property,
         urgency: data.urgency,
         insurance: isHome ? "" : (carrierLbl + (data.claim ? " · Claim #" + data.claim : "")),
         address: data.address,
+        city: data.city,
+        state: data.state,
+        zip: data.zip,
         visit: dateStr + (data.slot ? " · " + data.slot : ""),
         notes: data.notes,
         email: data.email,
@@ -499,7 +514,10 @@
       } else if (key === "insurance") {
         if (!data.carrier) errors.carrier = "Pick one";
       } else if (key === "place") {
-        if (!data.address.trim()) errors.address = "Address or cross streets";
+        if (!data.address.trim()) errors.address = "Street address";
+        if (!data.city.trim()) errors.city = "City";
+        if (!data.state.trim()) errors.state = "State";
+        if (!/^\d{5}$/.test(data.zip.trim())) errors.zip = "5-digit ZIP";
       } else if (key === "contact") {
         if (!data.name.trim()) errors.name = "Required";
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = "Valid email please";
