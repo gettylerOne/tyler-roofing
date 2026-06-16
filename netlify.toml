@@ -1,0 +1,4 @@
+# Static site published from the repo root. The only server-side piece is the
+# Netlify event function that forwards form submissions to Flint Systems.
+[functions]
+  directory = "netlify/functions"
