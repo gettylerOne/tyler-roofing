@@ -1440,6 +1440,22 @@
         openQuote(mode, project ? { project: project } : null, only ? only.split(",") : null);
       }
     });
+    // Phone-tap tracking. Fires a vendor-neutral event on any tel: click so it
+    // lights up automatically once GA4 / GTM / Plausible / Fathom is added — no
+    // rework needed. Until a tool is installed it's a harmless no-op. Delegated so
+    // it also catches the injected header/footer and the modal's Call buttons.
+    // (Doesn't preventDefault — the dialer still opens.) NOTE: this captures a
+    // CLICK, not a confirmed call, and carries no caller identity.
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest('a[href^="tel:"]');
+      if (!a) return;
+      var loc = a.getAttribute("data-call-loc") || "";
+      var page = location.pathname + location.search;
+      (window.dataLayer = window.dataLayer || []).push({ event: "phone_click", page_path: page, location: loc });
+      if (typeof window.gtag === "function") window.gtag("event", "phone_click", { page_path: page, location: loc });
+      if (typeof window.plausible === "function") window.plausible("Phone Click", { props: { page: page, location: loc } });
+      if (window.fathom && typeof window.fathom.trackEvent === "function") window.fathom.trackEvent("phone_click");
+    });
     initBeforeAfter();
     initFaq();
     initLightbox();
