@@ -521,7 +521,11 @@
         phone: data.phone,
         name: data.name
       })
-        .then(function (r) { if (!r.ok) throw new Error("status " + r.status); sendState = "ok"; })
+        .then(function (r) {
+          if (!r.ok) throw new Error("status " + r.status);
+          sendState = "ok";
+          if (typeof window.gtag === "function") window.gtag("event", "generate_lead", { form: "booking" });
+        })
         .catch(function () { sendState = "fail"; })
         .then(function () { if (FLOW[step] === "confirm") render(); });
     }
@@ -1208,6 +1212,7 @@
       postNetlify("contact", { name: f.name, email: f.email, phone: f.phone, msg: f.msg })
         .then(function (r) { if (!r.ok) throw new Error("status " + r.status); })
         .then(function () {
+          if (typeof window.gtag === "function") window.gtag("event", "generate_lead", { form: "contact" });
           var wrap = form.parentNode;
           form.remove();
           wrap.appendChild(el(
@@ -1427,7 +1432,23 @@
   /* =========================================================================
      BOOT
      ========================================================================= */
+  // GA4. Loaded once here (not pasted into 30 page heads) to match the
+  // chrome-injection pattern. Sends pageviews automatically; the phone_click +
+  // form-submit events fire through window.gtag, wired elsewhere.
+  function initAnalytics() {
+    var GA_ID = "G-H2HS3ETHV5"; // Tyler Roofing Website stream
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag("js", new Date());
+    window.gtag("config", GA_ID);
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+    document.head.appendChild(s);
+  }
+
   function init() {
+    initAnalytics();
     buildHeader();
     buildFooter();
     document.addEventListener("click", function (e) {
