@@ -398,17 +398,33 @@
       var proj = (PROJECT_TYPES.filter(function (p) { return p.id === data.project; })[0] || {}).label || "";
       var carrierLbl = (INSURANCE_CARRIERS.filter(function (c) { return c.id === data.carrier; })[0] || {}).label || "";
       function row(k, v) { return v ? '<div class="confirm-row"><div class="k">' + k + '</div><div class="v">' + escHtml(v) + "</div></div>" : ""; }
-      return '<div class="confirm">' +
-        '<div class="check"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M8 17 L14 23 L25 11" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
-        '<h2 class="h-display">Request received.</h2>' +
-        "<p>We'll call or text to confirm this time and get you on the schedule.</p>" +
-        '<div class="confirm-box">' +
+      var summary = '<div class="confirm-box">' +
           row("Project", proj) +
           (isHome ? "" : row("Insurance", carrierLbl + (data.claim ? " · Claim #" + data.claim : ""))) +
           row("Address", data.address) +
           row("Visit", dateStr + " · " + data.slot) +
           row("Contact", data.name + " · " + data.phone) +
-        "</div>" +
+        "</div>";
+      if (sendState === "sending") {
+        return '<div class="confirm">' +
+          '<h2 class="h-display">Sending your request…</h2>' +
+          "<p>One moment.</p>" + summary + "</div>";
+      }
+      if (sendState === "fail") {
+        return '<div class="confirm">' +
+          '<h2 class="h-display">That didn\'t go through.</h2>' +
+          "<p>Something went wrong sending your request — we don't want to lose it. Please call or text us and we'll get you on the schedule.</p>" +
+          summary +
+          '<div class="confirm-actions">' +
+            '<a class="btn btn-primary" href="' + TEL + '">Call ' + PHONE + "</a>" +
+            '<button class="btn btn-ghost" data-close>Back to site</button>' +
+          "</div></div>";
+      }
+      return '<div class="confirm">' +
+        '<div class="check"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M8 17 L14 23 L25 11" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+        '<h2 class="h-display">Request received.</h2>' +
+        "<p>We'll call or text to confirm this time and get you on the schedule.</p>" +
+        summary +
         '<div class="confirm-actions">' +
           '<button class="btn btn-primary" data-close>Back to site</button>' +
           '<a class="btn btn-ghost" href="' + TEL + '">Call ' + PHONE + "</a>" +
@@ -418,15 +434,17 @@
     function render() {
       var TITLES = { project: "About the project", insurance: "Your insurance carrier",
         place: "Where's the property?", contact: "How do we reach you?",
-        time: "Pick a time", confirm: "Request received" };
+        time: "Pick a time" };
       var key = FLOW[step];
       var lastForm = TOTAL_STEPS - 1;
       var isConfirm = key === "confirm";
       var pct = ((step + 1) / lastForm) * 100;
+      var cLabel = sendState === "fail" ? "Couldn't send" : sendState === "sending" ? "Sending…" : "Request sent";
+      var cTitle = sendState === "fail" ? "Couldn't send" : sendState === "sending" ? "Sending…" : "Request received";
       modal.innerHTML =
         '<div class="modal-head"><div>' +
-          '<div class="step-lbl">' + (!isConfirm ? "Step " + (step + 1) + " of " + lastForm : "Request sent") + "</div>" +
-          '<div class="step-title h-display">' + TITLES[key] + "</div></div>" +
+          '<div class="step-lbl">' + (!isConfirm ? "Step " + (step + 1) + " of " + lastForm : cLabel) + "</div>" +
+          '<div class="step-title h-display">' + (isConfirm ? cTitle : TITLES[key]) + "</div></div>" +
           '<button class="modal-close" data-close aria-label="Close">&times;</button></div>' +
         (!isConfirm ? '<div class="modal-progress"><div class="bar" style="width:' + pct + '%"></div></div>' : "") +
         '<div class="modal-body">' + stepBody() + "</div>" +
@@ -473,9 +491,10 @@
     }
 
     // Fired once, when the user clears the final step and lands on "confirm".
-    // The confirmation screen renders optimistically; if the POST fails the
-    // booking is lost silently (acceptable tradeoff for this front-end flow).
+    // The confirm screen shows a "sending" state, then flips to success or a
+    // "couldn't send — call us" fallback based on the actual POST result.
     var submitted = false;
+    var sendState = "sending"; // "sending" | "ok" | "fail"
     function submitBooking() {
       if (submitted) return;
       submitted = true;
@@ -501,7 +520,10 @@
         email: data.email,
         phone: data.phone,
         name: data.name
-      }).catch(function () {});
+      })
+        .then(function (r) { if (!r.ok) throw new Error("status " + r.status); sendState = "ok"; })
+        .catch(function () { sendState = "fail"; })
+        .then(function () { if (FLOW[step] === "confirm") render(); });
     }
 
     function advance() {
