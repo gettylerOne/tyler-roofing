@@ -56,6 +56,11 @@ exports.handler = async (event) => {
     zip: d.zip || '',
     project: d.project || '',
     urgency: d.urgency || '',
+    // Combined carrier + claim string, e.g. "State Farm · Claim #ABC123" (booking
+    // form only; empty for contact + home-services flows). Sent as its own field so
+    // Flint can show it on the Edit Lead modal. Still folded into notes above as a
+    // transition safety net — drop that once Flint's dedicated Insurance row is live.
+    insurance: d.insurance || '',
     notes: noteParts.join('\n'),
     externalId: submission.id, // Netlify submission id → hard dedup in Flint
   };
