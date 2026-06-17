@@ -8,8 +8,8 @@
 
   /* Path prefix — pages in /areas/ and /materials/ sit one level deep. */
   var ROOT = /\/(areas|materials)\//.test(location.pathname) ? "../" : "";
-  var PHONE = "205-515-6968";
-  var TEL = "tel:+12055156968";
+  var PHONE = "205-547-0122";
+  var TEL = "tel:+12055470122";
   var EMAIL = "tylerroofingandhomesolutions@gmail.com";
 
   function el(html) {

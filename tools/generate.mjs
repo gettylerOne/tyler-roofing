@@ -281,7 +281,7 @@ const closingCta = `
         <h2 class="h-display">Free inspection. Written quote. <i>No pressure.</i></h2>
         <div class="closing-cta-actions">
           <button class="btn btn-accent" data-quote>Free roof inspection →</button>
-          <a class="call-line" href="tel:+12055156968"><span class="lbl mono">or call</span><span class="num h-display">205-515-6968</span></a>
+          <a class="call-line" href="tel:+12055470122"><span class="lbl mono">or call</span><span class="num h-display">205-547-0122</span></a>
         </div>
       </div>
       <div class="closing-cta-panel">
@@ -346,7 +346,7 @@ function cityPage(slug, c) {
           <p class="pitch">${esc(c.pitch)}</p>
           <div class="actions">
             <button class="btn btn-primary" data-quote>Free roof inspection in ${esc(c.name)} →</button>
-            <a class="btn btn-ghost" href="tel:+12055156968">Call 205-515-6968</a>
+            <a class="btn btn-ghost" href="tel:+12055470122">Call 205-547-0122</a>
           </div>
         </div>
         <div class="facts">
@@ -443,7 +443,7 @@ function fringeCityPage(slug, c) {
           <p class="pitch">${esc(pitch)}</p>
           <div class="actions">
             <button class="btn btn-primary" data-quote>Free roof inspection in ${esc(c.name)} →</button>
-            <a class="btn btn-ghost" href="tel:+12055156968">Call 205-515-6968</a>
+            <a class="btn btn-ghost" href="tel:+12055470122">Call 205-547-0122</a>
           </div>
         </div>
         <div class="facts">
@@ -512,7 +512,7 @@ function materialPage(slug, m) {
           <p class="intro">${esc(m.intro)}</p>
           <div class="actions">
             <button class="btn btn-primary" data-quote>Quote for ${esc(m.short.toLowerCase())} →</button>
-            <a class="btn btn-ghost" href="tel:+12055156968">Or call 205-515-6968</a>
+            <a class="btn btn-ghost" href="tel:+12055470122">Or call 205-547-0122</a>
           </div>
         </div>
         <div class="spec">
