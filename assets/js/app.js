@@ -156,9 +156,6 @@
                 '<div><div class="reach-k">Hours</div>' +
                   '<div class="reach-line">Open 24 / 7 · <span class="accent">Emergency response</span></div>' +
                   '<div class="reach-sub">Office line: Mon–Sat · Storm calls anytime</div></div>' +
-                '<div><div class="reach-k">Office</div>' +
-                  '<div class="reach-line">100 N Main Street, Suite 4</div>' +
-                  '<div class="reach-sub mono">Columbiana, AL 35051</div></div>' +
               "</div>" +
             "</div>" +
           "</div>" +

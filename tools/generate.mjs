@@ -20,7 +20,7 @@ const CITIES = {
   columbiana: {
     name: "Columbiana", county: "Shelby County", pop: "~5,000",
     zip: "35051", distance: "Home office",
-    pitch: "Columbiana is home. Our office is at 100 N Main Street — county seat of Shelby County, a few minutes from the courthouse. If you're in Columbiana, we're already in the neighborhood.",
+    pitch: "Columbiana is home. County seat of Shelby County, and where we're based. If you're in Columbiana, we're already in the neighborhood.",
     neighborhoods: ["Downtown Columbiana", "Old Town", "Spring Creek", "Mooney Road", "Highway 25 corridor", "Lake Wilson", "Yellowleaf"],
     notes: "Mix of older downtown homes near the courthouse, mid-century ranches on the surrounding streets, and newer subdivisions out toward 25 and Highway 70. We do a lot of repair work on the older stock and full replacements on the newer subdivisions as they age out of their original 25-year shingles.",
     storm: "The Shelby County hail corridor runs through Columbiana every spring. The 2023 events brought weeks of claim work to the area. We respond same-day for active leaks and tarp-ups.",

@@ -1059,7 +1059,6 @@ button{font:inherit;color:inherit}
   .footer-reach .reach-k{display:none}
   .footer-reach .reach-list{display:flex;flex-direction:column;gap:12px}
   .footer-reach .reach-list>div:nth-child(3){order:1}
-  .footer-reach .reach-list>div:nth-child(4){order:2}
   .footer-reach .reach-list>div:nth-child(2){order:3}
   .footer-reach .reach-list>div:nth-child(3) .reach-sub{display:none}
   .footer .reach-phone{width:100%;justify-content:center;margin-bottom:6px}
