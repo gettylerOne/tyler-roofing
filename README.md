@@ -69,5 +69,6 @@ HTML — no build step is needed to serve the site.
   Wire it to an email/CRM endpoint before launch.
 - **Booking flow** — the multi-step inspection modal is front-end only; it
   collects details and confirms but doesn't submit anywhere yet.
-- **Slots to fill** — AL license number, BBB accreditation, social URLs, and the
-  real Google review link are placeholders throughout.
+- **Slots to fill** — BBB accreditation, social URLs, and the real Google review
+  link are still placeholders. The AL roofing license number (# 31643) is filled
+  in, in the `app.js` footer and the home-page trust badge.

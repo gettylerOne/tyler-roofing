@@ -83,8 +83,9 @@ voice. When writing or revising copy:
    11 invented reviews; the user has decided to keep them until real Google
    reviews come in. Don't add more invented reviews. The placeholder cards on
    reviews/about pages are clearly marked and should stay that way.
-2. **Trust badges** — AL license number, BBB accreditation status, and the
-   Google review URL are all "pending." Swap when real.
+2. **Trust badges** — AL roofing license # 31643 is real and live (footer in
+   `app.js` + home-page trust badge). BBB accreditation status and the Google
+   review URL are still "pending." Swap when real.
 3. **Forms have no backend.** The contact form and the 4-step booking modal
    are front-end only. Submitting validates and shows a confirmation, but
    nothing is sent anywhere. This is the #1 thing to wire before launch.
