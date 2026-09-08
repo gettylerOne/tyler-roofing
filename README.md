@@ -63,12 +63,13 @@ HTML — no build step is needed to serve the site.
 - **Photos** — hero, services, and gallery images are Unsplash placeholders.
   Real Tyler Roofing photos (logo, drone shots, gutter before/after, storm
   damage) are in `assets/img/`. Swap remaining Unsplash URLs as photos come in.
-- **Reviews** — Mike Thompson's review is real; the rest are clearly-marked
-  placeholders. The scrolling marquee reviews live in `assets/js/data.js`.
-- **Contact form** — currently front-end only (validates, shows a confirmation).
-  Wire it to an email/CRM endpoint before launch.
-- **Booking flow** — the multi-step inspection modal is front-end only; it
-  collects details and confirms but doesn't submit anywhere yet.
+- **Reviews** ? Mike Thompson's existing testimonial remains on the reviews and
+  about pages. Invented reviews and placeholder sections have been removed;
+  `assets/js/data.js` has an empty additional-review pool pending authentic reviews.
+- **Contact and booking forms** submit to Netlify Forms. The event handler forwards
+  leads to Flint and supports configurable confirmation emails, team alerts, and
+  one-time team reminders. Email delivery is off until configured; see
+  [backend setup](netlify/LEAD-SETUP.md). Existing form UI is unchanged.
 - **Slots to fill** — BBB accreditation, social URLs, and the real Google review
   link are still placeholders. The AL roofing license number (# 31643) is filled
   in, in the `app.js` footer and the home-page trust badge.

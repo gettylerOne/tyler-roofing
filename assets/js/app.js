@@ -707,7 +707,8 @@
      ========================================================================= */
   function initMarquee() {
     var host = $("[data-marquee]");
-    if (!host || !window.MARQUEE_REVIEWS) return;
+    if (!host) return;
+    if (!window.MARQUEE_REVIEWS || !window.MARQUEE_REVIEWS.length) { host.remove(); return; }
     var stars = '<div class="stars">' + star().repeat(5) + "</div>";
     function card(r) {
       var initials = r.name.split(" ").map(function (s) { return s[0]; }).slice(0, 2).join("");
@@ -787,6 +788,7 @@
     var prev = $(".rev-prev", root);
     var next = $(".rev-next", root);
     var reviews = window.MARQUEE_REVIEWS.filter(function (r) { return r.name !== "Mike Thompson"; });
+    if (!reviews.length) { root.remove(); return; }
     var n = reviews.length, gap = 20, vc, index, animating = false;
     function visibleCount() {
       var w = window.innerWidth;

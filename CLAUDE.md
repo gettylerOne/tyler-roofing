@@ -79,16 +79,18 @@ voice. When writing or revising copy:
 
 ## Open punch-list (things still placeholder)
 
-1. **Reviews** — only Mike Thompson is real. The marquee on the home page has
-   11 invented reviews; the user has decided to keep them until real Google
-   reviews come in. Don't add more invented reviews. The placeholder cards on
-   reviews/about pages are clearly marked and should stay that way.
+1. **Reviews** ? invented reviews and placeholder review sections were removed at
+   the user's request. Mike Thompson's existing testimonial remains on reviews
+   and about pages. Do not restore invented reviews or dates. The additional
+   review pool is empty until authentic reviews are supplied.
 2. **Trust badges** — AL roofing license # 31643 is real and live (footer in
    `app.js` + home-page trust badge). BBB accreditation status and the Google
    review URL are still "pending." Swap when real.
-3. **Forms have no backend.** The contact form and the 4-step booking modal
-   are front-end only. Submitting validates and shows a confirmation, but
-   nothing is sent anywhere. This is the #1 thing to wire before launch.
+3. **Forms use Netlify and Flint.** The Netlify submission-created event forwards
+   existing fields to Flint. Optional Resend confirmation emails, team alerts, and
+   one-time internal reminders require configuration in netlify/LEAD-SETUP.md.
+   The user explicitly requires keeping the current form appearance, fields,
+   layout, and buttons unchanged for this backend work. Do not simplify the UI.
 4. **Social URLs** — Facebook / Instagram / Google / YouTube footer icons are
    `href="#"` with a "launching soon" hover. The user is setting these up.
 5. **Photos** — most non-hero photos are Unsplash placeholders. The user is

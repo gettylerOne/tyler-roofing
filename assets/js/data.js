@@ -19,52 +19,7 @@ window.CITY_COORDS = {
   leeds:         { name: "Leeds",          lat: 33.5479, lng: -86.5478 },
 };
 
-/* Customer reviews for the scrolling home-page marquee.
-   Placeholder copy in Jacob's voice/area — swap with verbatim Google
-   reviews as they come in.
-   Optional fields per entry:
-     photo:     "assets/img/reviews/<file>.jpg"  // reviewer's face — shows in
-                                                  // the avatar circle instead
-                                                  // of coloured initials.
-     workPhoto: "assets/img/reviews/<file>.jpg"  // photo of the job — shows as
-                                                  // a small thumbnail at the
-                                                  // bottom of the card; clicks
-                                                  // open the full image. */
-window.MARQUEE_REVIEWS = [
-  { name: "Mike Thompson", town: "Hoover", project: "Roof replacement · insurance claim",
-    body: "Made the whole process easy. From the insurance call to the final check, everything was straightforward. Took care of me and will take care of you.",
-    color: "#014520", date: "2 weeks ago", workPhoto: "assets/img/work-roof-tile.jpg" },
-  { name: "Rachel Henderson", town: "Vestavia Hills", project: "Hail-damage claim",
-    body: "Came out the day after the storm, flew the drone, and told us exactly what to file. Carrier paid in two weeks.",
-    color: "#3d6b56", date: "1 month ago" },
-  { name: "David Whitfield", town: "Mountain Brook", project: "Designer-shingle replacement",
-    body: "Hired Jacob after two other quotes. He spec'd the right product for the house, not the cheapest. Came out perfect.",
-    color: "#9c3826", date: "3 weeks ago", workPhoto: "assets/img/work-roof-gray.jpg" },
-  { name: "Amanda Coley", town: "Pelham", project: "Storm tarping & full replacement",
-    body: "Tree came through the back of our roof at 2am. They had a tarp on by lunch. Three weeks later the roof was done. They handled everything.",
-    color: "#014520", date: "2 months ago" },
-  { name: "Brad Sullivan", town: "Helena", project: "Class 4 impact-resistant upgrade",
-    body: "No pressure, just honest advice. Highly recommend.",
-    color: "#b8553a", date: "1 month ago" },
-  { name: "Stephanie Albright", town: "Homewood", project: "Architectural shingle + gutters",
-    body: "Roofed our 1940s bungalow in two days with no surprises. Cleaner job site than I expected.",
-    color: "#7a5a8a", date: "5 weeks ago", workPhoto: "assets/img/work-gutters-brick.jpg" },
-  { name: "Kevin Marsh", town: "Alabaster", project: "Insurance-claim replacement",
-    body: "After our adjuster lowballed us, Jacob got on the phone with the carrier and walked them through every line item. We got fully paid.",
-    color: "#d97740", date: "6 weeks ago" },
-  { name: "Lauren Petras", town: "Chelsea", project: "Pre-listing roof replacement",
-    body: "Quick, clean, and done in two days. Couldn't ask for better.",
-    color: "#5a8a3d", date: "2 months ago" },
-  { name: "James Crowley", town: "Birmingham", project: "Standing-seam metal install",
-    body: "Wanted metal on a modern build and they nailed it. Clean panels, perfect flashing.",
-    color: "#3d5a8a", date: "3 months ago" },
-  { name: "Tonya Bishop", town: "McCalla", project: "Tornado-damage replacement",
-    body: "Lost our roof in the spring tornado. They had us tarped and fully replaced before insurance even closed.",
-    color: "#8a3d5a", date: "4 months ago" },
-  { name: "Ryan Doss", town: "Hoover", project: "Roof repair & valley fix",
-    body: "Found a leak three other companies missed. Fixed in an afternoon.",
-    color: "#3a4a5a", date: "1 week ago" },
-  { name: "Megan Holcombe", town: "Vestavia Hills", project: "Full replacement",
-    body: "Not the cheapest, but the most honest. Six months in, no issues.",
-    color: "#c98a32", date: "5 months ago" },
-];
+/* Additional reviews are intentionally empty until authentic reviews are supplied.
+   Mike Thompson's existing testimonial remains on reviews.html and about.html.
+   Do not add invented testimonials, dates, ratings, or project associations. */
+window.MARQUEE_REVIEWS = [];
