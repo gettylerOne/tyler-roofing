@@ -4,7 +4,7 @@
 
 /* City coordinates for the Leaflet service-area map. */
 window.CITY_COORDS = {
-  columbiana:    { name: "Columbiana",     lat: 33.1771, lng: -86.6094, hq: true },
+  columbiana:    { name: "Columbiana",     lat: 33.1771, lng: -86.6094, primary: true },
   birmingham:    { name: "Birmingham",     lat: 33.5186, lng: -86.8104, primary: true },
   hoover:        { name: "Hoover",         lat: 33.4054, lng: -86.8114 },
   vestavia:      { name: "Vestavia Hills", lat: 33.4488, lng: -86.7877 },

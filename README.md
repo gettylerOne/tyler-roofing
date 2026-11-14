@@ -1,7 +1,7 @@
 # Tyler Roofing &amp; Home Solutions — Website
 
-Static marketing site for Tyler Roofing &amp; Home Solutions (Columbiana, AL — serving
-the Birmingham metro). Plain HTML / CSS / JS, no framework, no build step required
+Static marketing site for Tyler Roofing &amp; Home Solutions (mobile, come-to-you roofing and home services serving
+the Birmingham metro and central Alabama). Plain HTML / CSS / JS, no framework, no build step required
 to serve. Rebuilt from a Claude Design prototype.
 
 ## Running it

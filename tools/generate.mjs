@@ -19,8 +19,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CITIES = {
   columbiana: {
     name: "Columbiana", county: "Shelby County", pop: "~5,000",
-    zip: "35051", distance: "Home office",
-    pitch: "Columbiana is home. County seat of Shelby County, and where we're based. If you're in Columbiana, we're already in the neighborhood.",
+    zip: "35051", distance: "Core service area",
+    pitch: "County seat of Shelby County and part of our core service area. We're mobile and come to you, so if you're in Columbiana, we'll come right to your door.",
     neighborhoods: ["Downtown Columbiana", "Old Town", "Spring Creek", "Mooney Road", "Highway 25 corridor", "Lake Wilson", "Yellowleaf"],
     notes: "Mix of older downtown homes near the courthouse, mid-century ranches on the surrounding streets, and newer subdivisions out toward 25 and Highway 70. We do a lot of repair work on the older stock and full replacements on the newer subdivisions as they age out of their original 25-year shingles.",
     storm: "The Shelby County hail corridor runs through Columbiana every spring. The 2023 events brought weeks of claim work to the area. We respond same-day for active leaks and tarp-ups.",
@@ -28,7 +28,7 @@ const CITIES = {
   },
   birmingham: {
     name: "Birmingham", county: "Jefferson County", pop: "~200,000",
-    zip: "35203 · 35205 · 35206 · 35209 · 35211 · 35213 · 35214 · 35216", distance: "Home base",
+    zip: "35203 · 35205 · 35206 · 35209 · 35211 · 35213 · 35214 · 35216", distance: "Core service area",
     pitch: "We're a Birmingham roofing company first. Most of our jobs run inside the city or the immediate metro.",
     neighborhoods: ["Forest Park", "Highland Park", "Crestwood", "Avondale", "Norwood", "Glen Iris", "Southside", "West End", "Five Points South", "Roebuck"],
     notes: "Lots of older housing stock here — 1920s-50s bungalows and tudors with original or once-replaced roofs. We do a lot of full tear-offs on these, plus chimney flashing, valley work, and decking repair on homes that haven't seen a new roof in 25+ years.",
