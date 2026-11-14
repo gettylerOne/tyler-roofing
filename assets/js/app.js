@@ -123,7 +123,7 @@
           '<div class="footer-grid">' +
             '<div class="footer-brand">' +
               logoHtml() +
-              "<p>A family-run home services company. Based in Columbiana, AL and serving the Birmingham metro since 2023.</p>" +
+              "<p>A family-run, mobile, come-to-you roofing and home services company serving the Birmingham metro and central Alabama since 2023.</p>" +
               '<button class="btn btn-primary" data-quote>Book Free Inspection</button>' +
               '<div class="footer-follow">' +
                 '<div class="lbl">Follow along</div>' +
@@ -155,7 +155,7 @@
                   '<a class="reach-email" href="mailto:' + EMAIL + '">' + EMAIL + "</a></div>" +
                 '<div><div class="reach-k">Hours</div>' +
                   '<div class="reach-line">Open 24 / 7 · <span class="accent">Emergency response</span></div>' +
-                  '<div class="reach-sub">Office line: Mon–Sat · Storm calls anytime</div></div>' +
+                  '<div class="reach-sub">Phone line: Mon–Sat · Storm calls anytime</div></div>' +
               "</div>" +
             "</div>" +
           "</div>" +
