@@ -1,8 +1,7 @@
 # Tyler Roofing &amp; Home Solutions — Website
 
 Static marketing site for Tyler Roofing &amp; Home Solutions (mobile, come-to-you roofing and home services serving
-the Birmingham metro and central Alabama). Plain HTML / CSS / JS, no framework, no build step required
-to serve. Rebuilt from a Claude Design prototype.
+the Birmingham metro and central Alabama). Plain HTML / CSS / JS, no framework; `node tools/build.mjs` prepares `dist/` for deployment. Rebuilt from a Claude Design prototype.
 
 ## Running it
 
@@ -56,7 +55,7 @@ node tools/generate.mjs
 ```
 
 This rewrites `areas/*.html` and `materials/*.html`. The output is plain static
-HTML — no build step is needed to serve the site.
+HTML — `node tools/build.mjs` prepares `dist/` for deployment.
 
 ## Notes / things to swap in later
 

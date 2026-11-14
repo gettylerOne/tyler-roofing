@@ -1,0 +1,7 @@
+# tylerroofingandhomesolutions.com
+# All crawlers welcome, including search engines and AI crawlers.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://tylerroofingandhomesolutions.com/sitemap.xml

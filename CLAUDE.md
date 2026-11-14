@@ -2,7 +2,7 @@
 
 Static marketing site for mobile, come-to-you roofing and home services serving
 the Birmingham metro and central Alabama (Jacob Tyler, owner). Built 2026-05-22 from a Claude Design prototype. Plain HTML +
-CSS + vanilla JS — no framework, no build step required to serve. The user
+CSS + vanilla JS — no framework; `node tools/build.mjs` prepares `dist/` for deployment. The user
 iterates on the site conversationally with me.
 
 ## How to view it while iterating

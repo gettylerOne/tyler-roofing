@@ -6,7 +6,7 @@
    These pages are data-driven and near-identical, so they are generated rather
    than hand-maintained. Edit the data or templates below and re-run to refresh
    /areas/*.html and /materials/*.html. The generated files are plain static
-   HTML — no build step is needed to serve the site.
+   HTML — node tools/build.mjs prepares dist/ for deployment.
    ========================================================================== */
 import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";

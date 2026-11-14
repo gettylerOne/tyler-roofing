@@ -1,4 +1,8 @@
-# Static site published from the repo root. The only server-side piece is the
-# Netlify event function that forwards form submissions to Flint Systems.
+# Only public files are published from dist/; internal files are not published.
+# The Netlify event function forwards form submissions to Flint Systems.
+[build]
+  command = "node tools/build.mjs"
+  publish = "dist"
+
 [functions]
   directory = "netlify/functions"
