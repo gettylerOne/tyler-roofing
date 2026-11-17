@@ -62,9 +62,10 @@ HTML — `node tools/build.mjs` prepares `dist/` for deployment.
 - **Photos** — hero, services, and gallery images are Unsplash placeholders.
   Real Tyler Roofing photos (logo, drone shots, gutter before/after, storm
   damage) are in `assets/img/`. Swap remaining Unsplash URLs as photos come in.
-- **Reviews** ? Mike Thompson's existing testimonial remains on the reviews and
-  about pages. Invented reviews and placeholder sections have been removed;
-  `assets/js/data.js` has an empty additional-review pool pending authentic reviews.
+- **Reviews** — Unverified testimonials and rating claims were removed, along
+  with invented reviews and placeholder sections. Do not restore invented or
+  unsourced reviews. `assets/js/data.js` keeps the additional review pool empty
+  until authentic, sourced reviews with permission are supplied.
 - **Contact and booking forms** submit to Netlify Forms. The event handler forwards
   leads to Flint and supports configurable confirmation emails, team alerts, and
   one-time team reminders. Email delivery is off until configured; see

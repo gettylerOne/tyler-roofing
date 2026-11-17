@@ -31,7 +31,7 @@ Jefferson and Shelby counties are the core service area, roughly a 25-mile radiu
 - Written warranties on every job: workmanship and manufacturer.
 - Financing available through third-party partner lenders.
 - More than 100 jobs completed since 2023, 2 to 3 crews, and 25 years of combined crew experience.
-- 5.0 rating on Google reviews.
+- Customers can find or leave a Google review through the reviews page.
 
 ## Contact
 
@@ -45,7 +45,7 @@ Jefferson and Shelby counties are the core service area, roughly a 25-mile radiu
 - [Home](https://tylerroofingandhomesolutions.com/): Company overview, free-inspection offer, service area map, and trust badges.
 - [Services](https://tylerroofingandhomesolutions.com/services): Roofing, home solutions, storm work, and tree removal.
 - [Storm damage and insurance](https://tylerroofingandhomesolutions.com/storm): What to do after a hail or wind storm, and how claims are handled.
-- [Reviews and recent work](https://tylerroofingandhomesolutions.com/reviews): Customer reviews and project photos.
+- [Reviews and recent work](https://tylerroofingandhomesolutions.com/reviews): Google review links and project photos.
 - [FAQ](https://tylerroofingandhomesolutions.com/faq): Inspections, costs, permits, claims, warranties, scheduling, materials, payment, and service area.
 - [About](https://tylerroofingandhomesolutions.com/about): Company story, founder, and licensing.
 - [Service areas](https://tylerroofingandhomesolutions.com/areas): Town-by-town coverage list.
