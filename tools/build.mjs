@@ -1,8 +1,11 @@
-import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeSitemap } from "./sitemap.mjs";
 
+import { recaptchaKey, transformRecaptcha } from "./recaptcha.mjs";
+
+const siteKey = recaptchaKey(process.env.SITE_RECAPTCHA_KEY);
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = join(ROOT, "dist");
 const { urls } = writeSitemap(ROOT);
@@ -43,3 +46,23 @@ for (const name of ["areas", "materials", "assets"]) {
   copyPublic(join(ROOT, name), join(DIST, name));
 }
 console.log(`Built dist/: ${copied} public files copied; sitemap contains ${urls.length} URLs.`);
+
+if (siteKey) {
+  let pages = 0, forms = 0;
+  function enableRecaptcha(directory) {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) enableRecaptcha(path);
+      else if (entry.isFile() && extname(entry.name).toLowerCase() === ".html") {
+        const result = transformRecaptcha(readFileSync(path, "utf8"), siteKey);
+        writeFileSync(path, result.html);
+        pages++;
+        forms += result.forms;
+      }
+    }
+  }
+  enableRecaptcha(DIST);
+  console.log(`reCAPTCHA on: ${pages} pages and ${forms} forms updated.`);
+} else {
+  console.log("reCAPTCHA is off (SITE_RECAPTCHA_KEY not set).");
+}
