@@ -20,6 +20,57 @@
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $all(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 
+  var captchaMeta = $('meta[name="recaptcha-site-key"]');
+  var captchaKey = captchaMeta ? captchaMeta.content.trim() : "";
+  var captchaScript;
+  function loadCaptcha() {
+    if (!captchaScript) captchaScript = new Promise(function (resolve, reject) {
+      var timer = setTimeout(function () { reject(new Error("Verification timeout")); }, 10000);
+      window.tylerRecaptchaReady = function () { clearTimeout(timer); resolve(window.grecaptcha); };
+      var script = document.createElement("script");
+      script.src = "https://www.google.com/recaptcha/api.js?render=explicit&onload=tylerRecaptchaReady";
+      script.async = true;
+      script.onerror = function () { clearTimeout(timer); reject(new Error("Verification unavailable")); };
+      document.head.appendChild(script);
+    });
+    return captchaScript;
+  }
+  function createCaptcha(slot) {
+    var state = { token: "", loaded: false, id: null };
+    if (!captchaKey) return state;
+    var widget = document.createElement("div");
+    var note = document.createElement("div");
+    note.setAttribute("aria-live", "polite");
+    slot.appendChild(widget);
+    slot.appendChild(note);
+    state.error = function () { note.className = "captcha-error"; note.textContent = "Please confirm you're not a robot"; };
+    state.reset = function () {
+      state.token = "";
+      if (state.id !== null) window.grecaptcha.reset(state.id);
+    };
+    function unavailable() {
+      state.loaded = false;
+      state.token = "";
+      note.className = "captcha-note";
+      note.innerHTML = "Verification didn't load. You can still send, or call <a href=\"" + TEL + "\">" + PHONE + "</a>.";
+    }
+    state.show = function () {
+      if (state.started) return;
+      state.started = true;
+      loadCaptcha().then(function (api) {
+        if (!slot.isConnected) return;
+        state.id = api.render(widget, {
+          sitekey: captchaKey,
+          callback: function (token) { state.token = token; state.loaded = true; note.textContent = ""; },
+          "expired-callback": function () { state.token = ""; },
+          "error-callback": unavailable
+        });
+        state.loaded = true;
+      }).catch(unavailable);
+    };
+    return state;
+  }
+
   var ARROW = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   /* Favicon — inject once if not already present. */
@@ -262,6 +313,10 @@
 
     var overlay = el('<div class="modal-overlay"><div class="modal" role="dialog" aria-modal="true"></div></div>');
     var modal = $(".modal", overlay);
+    var captchaSlot = el('<div class="modal-captcha" data-recaptcha-slot hidden></div>');
+    modal.appendChild(captchaSlot);
+    var captcha = createCaptcha(captchaSlot);
+    if (captchaKey) loadCaptcha().catch(function () {});
 
     function close() {
       overlay.remove();
@@ -413,6 +468,7 @@
           "<p>Something went wrong sending your request — we don't want to lose it. Please call or text us and we'll get you on the schedule.</p>" +
           summary +
           '<div class="confirm-actions">' +
+            '<button class="btn btn-ghost" data-retry>Try again</button>' +
             '<a class="btn btn-primary" href="' + TEL + '">Call ' + PHONE + "</a>" +
             '<button class="btn btn-ghost" data-close>Back to site</button>' +
           "</div></div>";
@@ -438,7 +494,7 @@
       var pct = ((step + 1) / lastForm) * 100;
       var cLabel = sendState === "fail" ? "Couldn't send" : sendState === "sending" ? "Sending…" : "Request sent";
       var cTitle = sendState === "fail" ? "Couldn't send" : sendState === "sending" ? "Sending…" : "Request received";
-      modal.innerHTML =
+      var content =
         '<div class="modal-head"><div>' +
           '<div class="step-lbl">' + (!isConfirm ? "Step " + (step + 1) + " of " + lastForm : cLabel) + "</div>" +
           '<div class="step-title h-display">' + (isConfirm ? cTitle : TITLES[key]) + "</div></div>" +
@@ -451,11 +507,27 @@
             '<div class="right"><div class="free-note">Free · No obligation</div>' +
             '<button class="btn btn-primary" data-next>' + (key === "time" ? "Request this time" : "Continue") + ARROW + "</button></div>" +
           "</div>" : "");
+      // Rebuild the existing direct children, leaving the captcha iframe attached.
+      Array.prototype.slice.call(modal.children).forEach(function (child) {
+        if (child !== captchaSlot) child.remove();
+      });
+      var fragment = document.createElement("template");
+      fragment.innerHTML = content;
+      var foot = fragment.content.querySelector(".modal-foot");
+      if (foot) foot.remove();
+      modal.insertBefore(fragment.content, captchaSlot);
+      if (foot) modal.appendChild(foot);
+      captchaSlot.hidden = !captchaKey || key !== "time";
+      if (captchaKey && key === "time") captcha.show();
       wire();
     }
 
     function wire() {
       $all("[data-close]", modal).forEach(function (b) { b.addEventListener("click", close); });
+      var retry = $("[data-retry]", modal);
+      if (retry) retry.addEventListener("click", function () {
+        submitted = false; sendState = "sending"; step = FLOW.indexOf("time"); errors = {}; render();
+      });
       var back = $("[data-back]", modal); if (back) back.addEventListener("click", function () { step--; errors = {}; render(); });
       var next = $("[data-next]", modal); if (next) next.addEventListener("click", advance);
 
@@ -501,7 +573,7 @@
       var carrierLbl = (INSURANCE_CARRIERS.filter(function (c) { return c.id === data.carrier; })[0] || {}).label || data.carrier;
       // Netlify titles the dashboard row + notification email from the `subject`
       // field, so build a readable one led by the customer's name.
-      postNetlify("booking", {
+      var fields = {
         subject: [data.name || "New booking", data.city, projLabel].filter(Boolean).join(" — "),
         flow: isHome ? "Home solutions" : "Roofing",
         project: projLabel,
@@ -517,13 +589,15 @@
         email: data.email,
         phone: data.phone,
         name: data.name
-      })
+      };
+      if (captchaKey) fields["g-recaptcha-response"] = captcha.token;
+      postNetlify("booking", fields)
         .then(function (r) {
           if (!r.ok) throw new Error("status " + r.status);
           sendState = "ok";
           if (typeof window.gtag === "function") window.gtag("event", "generate_lead", { form: "booking" });
         })
-        .catch(function () { sendState = "fail"; })
+        .catch(function () { sendState = "fail"; if (captchaKey) captcha.reset(); })
         .then(function () { if (FLOW[step] === "confirm") render(); });
     }
 
@@ -548,6 +622,10 @@
       } else if (key === "time") {
         if (!data.date) errors.date = "Pick a date";
         if (!data.slot) errors.slot = "Pick a window";
+        if (captchaKey && captcha.loaded && !captcha.token) {
+          errors.captcha = "Please confirm you're not a robot";
+          captcha.error();
+        }
       }
       if (Object.keys(errors).length === 0) {
         step++; errors = {};
@@ -1186,6 +1264,8 @@
   function initContactForm() {
     var form = $("#contact-form");
     if (!form) return;
+    var captcha = createCaptcha($("[data-recaptcha-slot]", form));
+    if (captchaKey) captcha.show();
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       $all(".err", form).forEach(function (x) { x.remove(); });
@@ -1202,11 +1282,13 @@
       });
       if (Object.keys(errs).length) return;
 
+      if (captchaKey && captcha.loaded && !captcha.token) { captcha.error(); return; }
+      if (captchaKey) f["g-recaptcha-response"] = captcha.token;
       var btn = form.querySelector('button[type="submit"]');
       var btnText = btn ? btn.textContent : "";
       if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
 
-      postNetlify("contact", { name: f.name, email: f.email, phone: f.phone, msg: f.msg })
+      postNetlify("contact", f)
         .then(function (r) { if (!r.ok) throw new Error("status " + r.status); })
         .then(function () {
           if (typeof window.gtag === "function") window.gtag("event", "generate_lead", { form: "contact" });
@@ -1221,6 +1303,7 @@
           ));
         })
         .catch(function () {
+          if (captchaKey) captcha.reset();
           if (btn) { btn.disabled = false; btn.textContent = btnText; }
           if (!form.querySelector(".form-err")) {
             form.appendChild(el('<div class="err form-err" style="margin-top:10px">Couldn\'t send that just now — please call <a href="' + TEL + '">' + PHONE + "</a> or email us directly.</div>"));

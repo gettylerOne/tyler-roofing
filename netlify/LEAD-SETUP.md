@@ -87,3 +87,14 @@ Provider references:
 - https://docs.netlify.com/build/functions/trigger-on-events/
 - https://resend.com/docs/api-reference/emails/send-email
 - https://resend.com/docs/dashboard/emails/idempotency-keys
+
+## reCAPTCHA
+
+Create a reCAPTCHA v2 “I'm not a robot” checkbox key at
+https://www.google.com/recaptcha/admin for tylerroofingandhomesolutions.com,
+www.tylerroofingandhomesolutions.com, and the netlify.app domain if used for previews.
+In Netlify set SITE_RECAPTCHA_KEY (scopes: Builds + Runtime + Functions) and
+SITE_RECAPTCHA_SECRET (scope: Runtime/Functions), then trigger a redeploy.
+The build adds the public key and enables verification on the registered forms
+only when SITE_RECAPTCHA_KEY is set and valid. Without the key, forms run without
+captcha exactly as before. The secret must never be included in published files.

@@ -2046,3 +2046,15 @@ button{font:inherit;color:inherit}
   .mrev-foot{display:none}
   .mrev-thumb{display:none}
 }
+
+.cf-captcha:empty{display:none}
+.cf-captcha:not(:empty){margin:8px 0 16px}
+.modal-captcha{margin:0 36px 20px;flex-shrink:0}
+.modal-captcha[hidden]{display:none}
+.captcha-note,.captcha-error{font-size:13px;margin-top:8px}
+.captcha-error{color:var(--error,#b42318)}
+@media(min-width:360px) and (max-width:400px){.modal-captcha{margin-left:24px;margin-right:24px}}
+@media(max-width:359px){
+  .modal-captcha{margin-left:16px;margin-right:16px}
+  .cf-captcha>div:first-child,.modal-captcha>div:first-child{transform:scale(.85);transform-origin:top left;width:304px;margin-bottom:-12px}
+}

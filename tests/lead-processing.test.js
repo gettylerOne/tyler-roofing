@@ -122,3 +122,13 @@ test('permanent email rejection is not retried and does not suppress other messa
   const f = fixture({}, call => ({ ok: call.body.to?.[0] !== 'customer@example.com', status: call.body.to?.[0] === 'customer@example.com' ? 422 : 200 }));
   assert.equal((await f.run()).statusCode, 502); assert.equal(f.calls.length, 4);
 });
+
+test('captcha submission is forwarded without exposing its token in payloads', async () => {
+  const f = fixture();
+  const token = 'private-captcha-token';
+  const result = await f.run({ ...base, data: { ...base.data, 'g-recaptcha-response': token } });
+  assert.equal(result.statusCode, 200);
+  assert.equal(f.calls[0].body.externalId, base.id);
+  assert.ok(!JSON.stringify(f.calls.map(call => call.body)).includes(token));
+  assert.ok(!('g-recaptcha-response' in f.calls[0].body));
+});
