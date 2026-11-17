@@ -385,7 +385,7 @@
           "</div>" +
           '<div class="privacy-note">' +
             '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="var(--accent)" stroke-width="1.4"/><path d="M10 6v4m0 3v.5" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round"/></svg>' +
-            '<div class="t">We don\'t share your info, don\'t sell leads, and don\'t send a single newsletter. We\'ll only reach out about your project.</div>' +
+            '<div class="t">We respect your privacy. We use your information to respond to your project request. See our <a href="' + ROOT + 'privacy.html">Privacy Policy</a>.</div>' +
           "</div></div>";
       }
       if (key === "time") return calendar();
@@ -744,8 +744,6 @@
       '<div class="rev-marquee-head">' +
         '<h3 class="rev-head-title">What neighbors are saying</h3>' +
         '<div class="rev-head-row">' +
-          '<div class="rev-head-rate">' + stars +
-            '<span class="rev-head-score">5.0 · Google</span></div>' +
           '<a class="read-all" href="' + ROOT + 'reviews.html">Read all reviews →</a>' +
         "</div>" +
       "</div>" +
@@ -767,7 +765,7 @@
   /* =========================================================================
      REVIEW CAROUSEL (reviews page) — three cards visible, arrows shift the row
      one card at a time, viewport edges fade. Driven by the marquee review pool
-     (Mike Thompson is excluded; he's the featured quote above).
+     which stays empty until authentic, sourced reviews with permission are supplied.
      ========================================================================= */
   function reviewCardHtml(r) {
     var initials = r.name.split(" ").map(function (s) { return s[0]; }).slice(0, 2).join("");
@@ -787,7 +785,7 @@
     var track = $(".rev-track", root);
     var prev = $(".rev-prev", root);
     var next = $(".rev-next", root);
-    var reviews = window.MARQUEE_REVIEWS.filter(function (r) { return r.name !== "Mike Thompson"; });
+    var reviews = window.MARQUEE_REVIEWS;
     if (!reviews.length) { root.remove(); return; }
     var n = reviews.length, gap = 20, vc, index, animating = false;
     function visibleCount() {

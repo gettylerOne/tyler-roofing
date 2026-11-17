@@ -19,7 +19,7 @@ window.CITY_COORDS = {
   leeds:         { name: "Leeds",          lat: 33.5479, lng: -86.5478 },
 };
 
-/* Additional reviews are intentionally empty until authentic reviews are supplied.
-   Mike Thompson's existing testimonial remains on reviews.html and about.html.
+/* Additional reviews stay empty until authentic, sourced reviews with permission
+   are supplied.
    Do not add invented testimonials, dates, ratings, or project associations. */
 window.MARQUEE_REVIEWS = [];

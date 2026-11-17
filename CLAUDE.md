@@ -64,8 +64,6 @@ voice. When writing or revising copy:
 - Specific numbers over vague claims (real: "100+ jobs since 2023" / fake: "we
   do hundreds of jobs"). If a number isn't real, ask before inventing one.
 - No "we are committed to excellence" / "your trusted partner" register.
-- The strongest existing line in the entire site is Mike Thompson's review:
-  *"They took care of me and will take care of you."* Mirror that register.
 - Southern but not performatively so. Confident, measured, premium.
 
 ## Photo conventions
@@ -79,10 +77,10 @@ voice. When writing or revising copy:
 
 ## Open punch-list (things still placeholder)
 
-1. **Reviews** ? invented reviews and placeholder review sections were removed at
-   the user's request. Mike Thompson's existing testimonial remains on reviews
-   and about pages. Do not restore invented reviews or dates. The additional
-   review pool is empty until authentic reviews are supplied.
+1. **Reviews** — Unverified testimonials and rating claims were removed, along
+   with invented reviews and placeholder sections. Do not restore invented or
+   unsourced reviews. The additional review pool stays empty until authentic,
+   sourced reviews with permission are supplied.
 2. **Trust badges** — AL roofing license # 31643 is real and live (footer in
    `app.js` + home-page trust badge). BBB accreditation status and the Google
    review URL are still "pending." Swap when real.
