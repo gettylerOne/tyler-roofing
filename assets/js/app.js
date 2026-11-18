@@ -219,7 +219,6 @@
               '<span class="lf">© ' + new Date().getFullYear() +
                 " Tyler Roofing and Home Solutions · Licensed & insured · AL</span>" +
               '<span class="rt">' +
-                '<span class="lf foot-lic">AL Roofing License # 31643</span>' +
                 '<a class="lf" href="' + ROOT + 'privacy.html">Privacy</a>' +
               "</span>" +
             "</div>" +
