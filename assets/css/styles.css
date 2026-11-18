@@ -1072,7 +1072,6 @@ button{font:inherit;color:inherit}
   .footer-legal-left .foot-soc{display:flex}
   .footer-legal-text{flex-direction:column;align-items:flex-end;text-align:right;width:auto;flex:1;gap:6px}
   .footer-legal-text .rt{flex-direction:column;align-items:flex-end;gap:4px}
-  .footer-legal-text .foot-lic{display:none}
 }
 
 /* =========================================================================
