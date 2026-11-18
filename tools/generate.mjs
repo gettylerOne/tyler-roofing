@@ -19,7 +19,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CITIES = {
   columbiana: {
     name: "Columbiana", county: "Shelby County", pop: "~5,000",
-    zip: "Call to confirm", distance: "Core service area",
+    distance: "Core service area",
     pitch: "County seat of Shelby County and part of our core service area. We're mobile and come to you, so if you're in Columbiana, we'll come right to your door.",
     neighborhoods: ["Downtown Columbiana", "Old Town", "Spring Creek", "Mooney Road", "Highway 25 corridor", "Lake Wilson", "Yellowleaf"],
     notes: "Mix of older downtown homes near the courthouse, mid-century ranches on the surrounding streets, and newer subdivisions out toward 25 and Highway 70. We do a lot of repair work on the older stock and full replacements on the newer subdivisions as they age out of their original 25-year shingles.",
@@ -355,8 +355,8 @@ function cityPage(slug, c) {
           <div class="fact"><span class="k">County</span><span class="v">${esc(c.county)}</span></div>
           <div class="fact"><span class="k">Population</span><span class="v">${esc(c.pop)}</span></div>
           <div class="fact"><span class="k">Distance</span><span class="v">${esc(c.distance)}</span></div>
-          <div class="fact"><span class="k">ZIPs</span><span class="v" style="font-size:12px">${esc(c.zip)}</span></div>
-          <div class="scheduling"><span class="dot"></span><span class="mono">Currently scheduling</span></div>
+${c.zip ? `          <div class="fact"><span class="k">ZIPs</span><span class="v" style="font-size:12px">${esc(c.zip)}</span></div>
+` : ""}          <div class="scheduling"><span class="dot"></span><span class="mono">Currently scheduling</span></div>
         </div>
       </div>
     </div>

@@ -1017,6 +1017,8 @@ button{font:inherit;color:inherit}
 }
 .footer-legal .lf{font-family:var(--mono);font-size:11px;letter-spacing:.03em;
   color:var(--muted)}
+.footer-entity{font-family:var(--mono);font-size:11px;letter-spacing:.03em;
+  color:var(--muted);line-height:1.5;margin:12px 0 0;overflow-wrap:anywhere}
 .footer-legal .rt{display:flex;gap:18px;flex-wrap:wrap}
 .footer-legal .foot-soc{display:none}
 .footer-legal-left{display:none}

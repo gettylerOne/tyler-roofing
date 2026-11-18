@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, copyFileSync, existsSync, mkdirSync, readd
 import { dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeSitemap } from "./sitemap.mjs";
+import { transformSitewide } from "./sitewide.mjs";
 
 import { recaptchaKey, transformRecaptcha } from "./recaptcha.mjs";
 
@@ -46,6 +47,21 @@ for (const name of ["areas", "materials", "assets"]) {
   copyPublic(join(ROOT, name), join(DIST, name));
 }
 console.log(`Built dist/: ${copied} public files copied; sitemap contains ${urls.length} URLs.`);
+
+function applySitewide(directory) {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) applySitewide(path);
+    else if (entry.isFile() && extname(entry.name).toLowerCase() === ".html") {
+      try {
+        writeFileSync(path, transformSitewide(readFileSync(path, "utf8")));
+      } catch (error) {
+        throw new Error(`Sitewide transform failed for ${path}: ${error.message}`, { cause: error });
+      }
+    }
+  }
+}
+applySitewide(DIST);
 
 if (siteKey) {
   let pages = 0, forms = 0;

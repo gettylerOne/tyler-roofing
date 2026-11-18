@@ -227,7 +227,10 @@
         "</div>" +
       "</footer>"
     );
-    $("#site-footer").appendChild(footer);
+    var footerHost = $("#site-footer");
+    var entity = $(".footer-entity", footerHost);
+    if (entity) $(".container", footer).appendChild(entity);
+    footerHost.appendChild(footer);
     $all("[data-soon]", footer).forEach(function (a) {
       a.addEventListener("click", function (e) { e.preventDefault(); });
     });
