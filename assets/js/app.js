@@ -1,5 +1,5 @@
 /* ============================================================================
-   Tyler Roofing & Home Solutions — app.js
+   Tyler Roofing and Home Solutions — app.js
    Shared chrome (header/footer) + all interactivity for the static site.
    No framework. Loaded on every page after data.js.
    ========================================================================== */
@@ -84,8 +84,8 @@
 
   /* Logo lockup — original Tyler wordmark, recolored to the accent green. */
   function logoHtml() {
-    return '<a class="logo" href="' + ROOT + 'index.html" aria-label="Tyler Roofing & Home Solutions home">' +
-      '<img src="' + ROOT + 'assets/img/tyler-logo-green.png" alt="Tyler Roofing & Home Solutions"></a>';
+    return '<a class="logo" href="' + ROOT + 'index.html" aria-label="Tyler Roofing and Home Solutions home">' +
+      '<img src="' + ROOT + 'assets/img/tyler-logo-green.png" alt="Tyler Roofing and Home Solutions"></a>';
   }
 
   /* =========================================================================
@@ -206,7 +206,7 @@
                   '<a class="reach-email" href="mailto:' + EMAIL + '">' + EMAIL + "</a></div>" +
                 '<div><div class="reach-k">Hours</div>' +
                   '<div class="reach-line">Open 24 / 7 · <span class="accent">Emergency response</span></div>' +
-                  '<div class="reach-sub">Phone line: Mon–Sat · Storm calls anytime</div></div>' +
+                  '<div class="reach-sub">Call or text anytime · 24/7 emergency service</div></div>' +
               "</div>" +
             "</div>" +
           "</div>" +
@@ -217,7 +217,7 @@
             "</div>" +
             '<div class="footer-legal-text">' +
               '<span class="lf">© ' + new Date().getFullYear() +
-                " Tyler Roofing & Home Solutions · Licensed & insured · AL</span>" +
+                " Tyler Roofing and Home Solutions · Licensed & insured · AL</span>" +
               '<span class="rt">' +
                 '<span class="lf foot-lic">AL Roofing License # 31643</span>' +
                 '<a class="lf" href="' + ROOT + 'privacy.html">Privacy</a>' +
@@ -417,7 +417,7 @@
               '<input type="text" data-field="state" value="' + escAttr(data.state) + '" placeholder="AL">' +
               (errors.state ? '<div class="err">' + errors.state + "</div>" : "") + "</div>" +
             '<div class="field"><label>ZIP</label>' +
-              '<input type="text" inputmode="numeric" data-field="zip" value="' + escAttr(data.zip) + '" placeholder="35051">' +
+              '<input type="text" inputmode="numeric" data-field="zip" value="' + escAttr(data.zip) + '" placeholder="ZIP code">' +
               (errors.zip ? '<div class="err">' + errors.zip + "</div>" : "") + "</div>" +
           "</div>" +
           '<div class="field"><label>Anything we should know? (optional)</label>' +
@@ -924,7 +924,7 @@
           '<h3 class="h-display">Drop a quick review.</h3>' +
           "<p>We're a small shop, and word of mouth is how most folks find us. A quick review means more than you'd think.</p>" +
           '<div class="actions">' +
-            '<a class="btn btn-primary" style="font-size:13px;padding:10px 16px" href="https://www.google.com/search?q=Tyler+Roofing+and+Home+Solutions+Columbiana+AL" target="_blank" rel="noopener">Leave a Google review →</a>' +
+            '<a class="btn btn-primary" style="font-size:13px;padding:10px 16px" href="https://www.google.com/search?q=Tyler+Roofing+and+Home+Solutions" target="_blank" rel="noopener">Leave a Google review →</a>' +
             '<button class="later">Maybe later</button>' +
           "</div></div>"
       );
@@ -953,9 +953,8 @@
     var weight = opts.primary ? 700 : 500;
     var fontSize = opts.primary ? 13 : 11.5;
     var ring = opts.active ? "box-shadow:0 0 0 6px color-mix(in oklab,var(--accent) 25%,transparent);" : "";
-    var hq = opts.hq ? '<span style="font-family:JetBrains Mono,monospace;font-size:8.5px;letter-spacing:.03em;background:var(--accent);color:#fff;padding:1px 5px;border-radius:999px;margin-left:6px;font-weight:600">HQ</span>' : "";
     var label = opts.showLabel === false ? "" :
-      '<span style="font-family:Manrope,sans-serif;font-size:' + fontSize + "px;font-weight:" + weight + ';color:var(--fg);background:color-mix(in oklab,var(--bg) 88%,transparent);padding:1px 6px;border-radius:6px;text-shadow:0 0 6px var(--bg)">' + name + hq + "</span>";
+      '<span style="font-family:Manrope,sans-serif;font-size:' + fontSize + "px;font-weight:" + weight + ';color:var(--fg);background:color-mix(in oklab,var(--bg) 88%,transparent);padding:1px 6px;border-radius:6px;text-shadow:0 0 6px var(--bg)">' + name + "</span>";
     var html =
       '<div style="display:flex;align-items:center;gap:6px;white-space:nowrap;transform:translate(-' + (size / 2) + "px,-" + (size / 2) + 'px)">' +
         '<span style="width:' + size + "px;height:" + size + 'px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);' + ring + 'flex-shrink:0;display:inline-block"></span>' +
@@ -991,7 +990,7 @@
       Object.keys(window.CITY_COORDS).forEach(function (id) {
         var c = window.CITY_COORDS[id];
         var m = L.marker([c.lat, c.lng], {
-          icon: cityIcon(L, c.name, { primary: c.primary || c.hq, hq: c.hq, active: id === activeId, showLabel: showLabel }),
+          icon: cityIcon(L, c.name, { primary: c.primary, active: id === activeId, showLabel: showLabel }),
         }).addTo(map);
         if (interactive) m.on("click", function () { selectPin(id); });
         markers[id] = m;
@@ -1005,7 +1004,7 @@
         activeId = id;
         Object.keys(window.CITY_COORDS).forEach(function (k) {
           var c = window.CITY_COORDS[k];
-          markers[k].setIcon(cityIcon(L, c.name, { primary: c.primary || c.hq, hq: c.hq, active: k === id, showLabel: showLabel }));
+          markers[k].setIcon(cityIcon(L, c.name, { primary: c.primary, active: k === id, showLabel: showLabel }));
         });
         var c = window.CITY_COORDS[id];
         map.panTo([c.lat, c.lng], { animate: true, duration: 0.5 });
@@ -1094,7 +1093,7 @@
      ========================================================================= */
   var AL_SERVICE = {
     "Jefferson":  { tier: "core", cities: ["birmingham","hoover","vestavia","mountainbrook","homewood","leeds","mccalla"] },
-    "Shelby":     { tier: "core", cities: ["columbiana","hoover","pelham","helena","alabaster","chelsea","calera","leeds"] },
+    "Shelby":     { tier: "core", cities: ["hoover","pelham","helena","alabaster","chelsea","calera","columbiana","leeds"] },
     "Tuscaloosa": { tier: "edge", cities: ["mccalla", {name:"Tuscaloosa", href:"areas/tuscaloosa.html"}, {name:"Northport", href:"areas/northport.html"}] },
     "St. Clair":  { tier: "edge", cities: ["leeds", {name:"Pell City", href:"areas/pell-city.html"}, {name:"Moody", href:"areas/moody.html"}, {name:"Springville", href:"areas/springville.html"}, {name:"Odenville", href:"areas/odenville.html"}] },
     "Bibb":       { tier: "edge", cities: [{name:"Centreville", href:"areas/centreville.html"}, {name:"Brent", href:"areas/brent.html"}, {name:"West Blocton", href:"areas/west-blocton.html"}] },
@@ -1516,7 +1515,7 @@
   // chrome-injection pattern. Sends pageviews automatically; the phone_click +
   // form-submit events fire through window.gtag, wired elsewhere.
   function initAnalytics() {
-    var GA_ID = "G-H2HS3ETHV5"; // Tyler Roofing Website stream
+    var GA_ID = "G-H2HS3ETHV5"; // Tyler Roofing and Home Solutions Website stream
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag("js", new Date());

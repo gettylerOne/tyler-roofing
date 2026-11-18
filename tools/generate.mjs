@@ -19,7 +19,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CITIES = {
   columbiana: {
     name: "Columbiana", county: "Shelby County", pop: "~5,000",
-    zip: "35051", distance: "Core service area",
+    zip: "Call to confirm", distance: "Core service area",
     pitch: "County seat of Shelby County and part of our core service area. We're mobile and come to you, so if you're in Columbiana, we'll come right to your door.",
     neighborhoods: ["Downtown Columbiana", "Old Town", "Spring Creek", "Mooney Road", "Highway 25 corridor", "Lake Wilson", "Yellowleaf"],
     notes: "Mix of older downtown homes near the courthouse, mid-century ranches on the surrounding streets, and newer subdivisions out toward 25 and Highway 70. We do a lot of repair work on the older stock and full replacements on the newer subdivisions as they age out of their original 25-year shingles.",
@@ -303,7 +303,7 @@ const closingCta = `
           <div class="hf-row">
             <div class="field">
               <label for="cl-zip">ZIP code</label>
-              <input id="cl-zip" name="zip" type="text" inputmode="numeric" placeholder="35051">
+              <input id="cl-zip" name="zip" type="text" inputmode="numeric" placeholder="ZIP code">
             </div>
             <div class="field">
               <label for="cl-need">What do you need?</label>
@@ -420,7 +420,7 @@ function cityPage(slug, c) {
 ${closingCta}`;
 
   return htmlShell({
-    title: `Roofers in ${c.name}, AL — Tyler Roofing & Home Solutions`,
+    title: `Roofers in ${c.name}, AL — Tyler Roofing and Home Solutions`,
     desc: `Roofing, repairs, and storm/insurance work in ${c.name}, Alabama. ${c.pitch}`,
     page: "areas",
     body,
@@ -429,7 +429,7 @@ ${closingCta}`;
 
 /* ── Fringe-city page (lighter, no invented specifics) ──────────────────── */
 function fringeCityPage(slug, c) {
-  const pitch = c.pitch || `${c.name} sits in ${c.county}, about ${c.distance} from our Birmingham-metro base. It's on the fringe of where we regularly work, but we still take roofing and home-solutions jobs out this way. Call and we'll give you a straight answer on whether we can get to you and when.`;
+  const pitch = c.pitch || `${c.name} in ${c.county} is part of our extended service area. Our mobile crews come to you for roofing and home-solutions jobs. Call and we'll give you a straight answer on whether we can get to you and when.`;
 
   const body = `
   <section class="city-hero">
@@ -478,8 +478,8 @@ function fringeCityPage(slug, c) {
 ${closingCta}`;
 
   return htmlShell({
-    title: `Roofers in ${c.name}, AL — Tyler Roofing & Home Solutions`,
-    desc: `Roofing, repairs, and storm/insurance work in ${c.name}, ${c.county}, Alabama — fringe coverage from Tyler Roofing & Home Solutions.`,
+    title: `Roofers in ${c.name}, AL — Tyler Roofing and Home Solutions`,
+    desc: `Roofing, repairs, and storm/insurance work in ${c.name}, ${c.county}, Alabama — fringe coverage from Tyler Roofing and Home Solutions.`,
     page: "areas",
     body,
   });
@@ -588,7 +588,7 @@ function materialPage(slug, m) {
 ${closingCta}`;
 
   return htmlShell({
-    title: `${m.name} — Tyler Roofing, Birmingham AL`,
+    title: `${m.name} — Tyler Roofing and Home Solutions, Birmingham AL`,
     desc: m.intro,
     page: "services",
     body,
