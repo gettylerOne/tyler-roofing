@@ -217,7 +217,7 @@
             "</div>" +
             '<div class="footer-legal-text">' +
               '<span class="lf">© ' + new Date().getFullYear() +
-                " Tyler Roofing and Home Solutions · Licensed & insured · AL</span>" +
+                " Tyler Roofing and Home Solutions · Licensed & bonded · AL</span>" +
               '<span class="rt">' +
                 '<a class="lf" href="' + ROOT + 'privacy.html">Privacy</a>' +
               "</span>" +
